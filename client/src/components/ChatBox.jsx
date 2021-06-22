@@ -51,17 +51,11 @@ function ChatBox() {
       <br />
       <div>
         <form onSubmit={onMessageSubmit}>
-          {
-          // eslint-disable-next-line
-          console.log('Message system working')
-          }
-          <h1>Messenger</h1>
-          <div className="name-field">
-            <TextField name="name" onChange={(e) => onTextChange(e)} value={state.name} label="Name" />
-          </div>
+          <h2>Send Message</h2>
           <div>
             <TextField
               name="message"
+              className="text-field"
               onChange={(e) => onTextChange(e)}
               value={state.message}
               id="outlined-multiline-static"
@@ -69,6 +63,7 @@ function ChatBox() {
               label="Message"
             />
           </div>
+          <br />
           <button type="button" onClick={onMessageSubmit}>Send Message</button>
         </form>
       </div>

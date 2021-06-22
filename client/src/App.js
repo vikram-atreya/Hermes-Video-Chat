@@ -9,14 +9,14 @@ import Notifications from './components/Notifications';
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
-    borderRadius: 15,
-    margin: '30px 100px',
+    borderRadius: 0,
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
-    alignItems: 'center',
-    width: '600px',
+    alignItems: 'left',
+    width: '100%',
     border: '2px solid black',
+    backgroundColor: '#241233',
 
     [theme.breakpoints.down('xs')]: {
       width: '100%',
@@ -30,10 +30,23 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     alignItems: 'center',
     width: '100%',
+    overflow: 'hidden',
   },
   row: {
     display: 'flex',
     flexDirection: 'row',
+    padding: 0,
+    margin: 0,
+  },
+  title: {
+    borderRadius: 0,
+    color: 'aliceblue',
+  },
+  footer: {
+    display: 'flex',
+    flexDirection: 'row',
+    padding: 0,
+    margin: 0,
   },
 }));
 
@@ -42,17 +55,22 @@ const App = () => {
 
   return (
     <div className={classes.wrapper}>
-      <AppBar className={classes.appBar} position="static" color="inherit">
-        <Typography variant="h2" align="center">Video Chat</Typography>
+      <AppBar className={classes.appBar} position="static" color="inherit" align="center" alignItems="left">
+        <Typography variant="h4" className={classes.title}>
+          Teams clone
+        </Typography>
       </AppBar>
 
       <div className={classes.row}>
         <VideoPlayer />
         <ChatBox />
       </div>
-      <Sidebar>
-        <Notifications />
-      </Sidebar>
+      <div className={classes.footer}>
+        <Sidebar>
+          <Notifications />
+        </Sidebar>
+      </div>
+
     </div>
   );
 };
