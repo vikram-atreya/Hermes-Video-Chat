@@ -9,9 +9,8 @@ function ChatBox() {
 
   const socketRef = useRef();
 
-  useEffect(
-    () => {
-      socketRef.current = io.connect('http://localhost:5000');
+  useEffect(() => {
+      socketRef.current = io.connect('http://localhost:8000');
       socketRef.current.on('message', ({ name, message }) => {
         setChat([...chat, { name, message }]);
       });
@@ -28,6 +27,8 @@ function ChatBox() {
     // eslint-disable-next-line
     console.log('Message submit button working');
     const { name, message } = state;
+    // eslint-disable-next-line
+    console.log({ name, message });
     socketRef.current.emit('message', { name, message });
     e.preventDefault();
     setState({ message: '', name });
@@ -46,12 +47,16 @@ function ChatBox() {
     <div className="card">
       <div className="render-chat">
         <h1>Chat Log</h1>
+        <div>random text</div>
         {renderChat()}
       </div>
       <br />
       <div>
         <form onSubmit={onMessageSubmit}>
           <h2>Send Message</h2>
+          <div className="name-field">
+		    <TextField name="name" onChange={(e) => onTextChange(e)} value={state.name} label="Name" />
+		  </div>
           <div>
             <TextField
               name="message"
@@ -66,6 +71,7 @@ function ChatBox() {
           <br />
           <button type="button" onClick={onMessageSubmit}>Send Message</button>
         </form>
+        <br/> <br/> <br/>
       </div>
     </div>
   );
