@@ -1,23 +1,26 @@
 .card {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
     margin: 30px;
+    margin-right: 10px;
+    margin-top: 0px;
     min-height: 30rem;
     min-width: 25rem;
-    width: 300px;
+    width: 100%;
     color: rgb(0, 0, 0);
+    min-height: 80%;
+    max-height: 81%;
   }
   form {
-    width: 350px;
-    height: 100px;
+    width: 100%;
+    height: 15%;
     font-size: small;
     border-radius: 5px;
     padding: 20px;
     box-shadow: 0px 3px 24px -8px rgba(0, 0, 0, 0.75);
+    clear: both;
   }
   
   .name-field {
-    margin-bottom: 40px;
+    margin-bottom: 10px;
   }
   
   button {
@@ -28,17 +31,21 @@
   }
   
   .render-chat {
-    max-width: 350px;
-    height: 300px;
+    display: flex;
+    width: 100%;
+    min-height: 40%;
+    max-height: 41%;
     border-radius: 5px;
     padding: 20px;
-    padding-right: 0;
     box-shadow: 0px 3px 24px -8px rgba(0, 0, 0, 0.75);
     word-wrap:break-word;
+    clear: right;
+    overflow: scroll;
   }
   
   .text-field{
-    height: 20px;
+    height: 5px;
+    padding: 0px;
   }
 
   h3 {

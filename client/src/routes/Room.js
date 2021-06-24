@@ -1,5 +1,8 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useContext } from "react";
+
 import ChatBox from '../components/ChatBox';
+import { NameContext } from '../Context';
+
 import { Button, makeStyles, Typography } from '@material-ui/core';
 import ScreenShareIcon from "@material-ui/icons/ScreenShare";
 import CancelPresentationIcon from '@material-ui/icons/CancelPresentation';
@@ -7,18 +10,30 @@ import MicOffIcon from '@material-ui/icons/MicOff';
 import MicIcon from '@material-ui/icons/Mic';
 import VideocamIcon from '@material-ui/icons/Videocam';
 import VideocamOffIcon from '@material-ui/icons/VideocamOff';
+
 import io from "socket.io-client";
 import Peer from "simple-peer";
+
 import styled from "styled-components";
+import { lightBlue } from "@material-ui/core/colors";
 
 const useStyles = makeStyles((theme) => ({
     button: {
-      marginLeft: '19px',
+      marginLeft: '10px',
+      alignSelf: 'center',
     },
     stickToBottom: {
         width: '100%',
         position: 'fixed',
         bottom: 0,
+        left: 0,
+        backgroundColor: 'lightBlue',
+        marginLeft: '0px',
+        alignItems: 'center',
+        alignSelf: 'center',
+        paddingTop: '1em',
+        paddingBottom: '1em',
+        paddingLeft: 'auto',
       },
   }));
 
@@ -46,7 +61,9 @@ const Video = (props) => {
     });
 
     return (
+        <>
         <StyledVideo controls playsInline autoPlay ref={ref} />
+        </>
     );
 }
 
@@ -65,10 +82,12 @@ const Room = (props) => {
     const userVideo = useRef();
     const peersRef = useRef([]);
     const roomID = props.match.params.roomID;
+    const { name } = useContext(NameContext);
 
     const classes = useStyles();
 
     useEffect(() => {
+        console.log({name});
         socketRef.current = io.connect("/");
         navigator.mediaDevices.getUserMedia({ video: videoConstraints, audio: true }).then(stream => {
             setmyVideo(stream);
@@ -101,7 +120,7 @@ const Room = (props) => {
                 item.peer.signal(payload.signal);
             });
         })
-    }, []);
+    }, [name]);
 
     function createPeer(userToSignal, callerID, stream) {
         const peer = new Peer({
@@ -176,32 +195,35 @@ const Room = (props) => {
     return (
         <div style={{  
             display: "grid",  
-            gridTemplateColumns: "1fr 1fr"  
+            gridTemplateColumns: "5fr 1fr",
+            right: "0px",
+            margin: "0px",
+            maxHeight: "1080px",
           }}>
             <Container>
                 <StyledVideo controls muted ref={userVideo} autoPlay playsInline />
                 {peers.map((peer, index) => {
                     return (
-                        <Video key={index} peer={peer} />
+                        <Video key={index} peer={peer} name={name} />
                     );
                 })}
                 <Typography className={classes.stickToBottom}>
                     { (video === 0) ? (
-                        <Button variant="contained" color="primary" startIcon={<VideocamIcon fontSize="large" />} onClick={() => startVideo()} />
+                        <Button className={classes.button} variant="contained" color="danger" startIcon={<VideocamIcon fontSize="large" />} onClick={() => startVideo()} />
                     ) : (
-                        <Button variant="contained" color="primary" startIcon={<VideocamOffIcon fontSize="large" />} onClick={() => stopVideo()} />
+                        <Button className={classes.button} variant="contained" color="primary" startIcon={<VideocamOffIcon fontSize="large" />} onClick={() => stopVideo()} />
                     )}
                     { (audio === 0) ? (
-                        <Button variant="contained" color="primary" startIcon={<MicIcon fontSize="large" />} onClick={() => startAudio()} />
+                        <Button className={classes.button} variant="contained" color="danger" startIcon={<MicIcon fontSize="large" />} onClick={() => startAudio()} />
                     ) : (
-                        <Button variant="contained" color="primary" startIcon={<MicOffIcon fontSize="large" />} onClick={() => stopAudio()} />
+                        <Button className={classes.button} variant="contained" color="primary" startIcon={<MicOffIcon fontSize="large" />} onClick={() => stopAudio()} />
                     )}
                     { (video === 1 || video === 0) ? (
-                        <Button variant="contained" color="primary" startIcon={<ScreenShareIcon fontSize="large" />} onClick={() => shareScreen()}>
+                        <Button className={classes.button} variant="contained" color="primary" startIcon={<ScreenShareIcon fontSize="large" />} onClick={() => shareScreen()}>
                         Share screen
                         </Button>
                     ) : (
-                        <Button variant="contained" color="primary" startIcon={<CancelPresentationIcon fontSize="large" />} onClick={() => stopshareScreen()}>
+                        <Button className={classes.button} variant="contained" color="primary" startIcon={<CancelPresentationIcon fontSize="large" />} onClick={() => stopshareScreen()}>
                         Stop Sharin
                         </Button>
                     )}

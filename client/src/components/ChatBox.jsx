@@ -46,32 +46,29 @@ function ChatBox() {
   return (
     <div className="card">
       <div className="render-chat">
-        <h1>Chat Log</h1>
-        <div>random text</div>
-        {renderChat()}
+        <div>
+          <h1>Chat Log</h1>
+          {renderChat()}
+        </div>
       </div>
-      <br />
       <div>
         <form onSubmit={onMessageSubmit}>
           <h2>Send Message</h2>
           <div className="name-field">
-		    <TextField name="name" onChange={(e) => onTextChange(e)} value={state.name} label="Name" />
-		  </div>
+		        <TextField name="name" onChange={(e) => onTextChange(e)} value={state.name} label="Name" />
+		      </div>
           <div>
             <TextField
               name="message"
               className="text-field"
               onChange={(e) => onTextChange(e)}
               value={state.message}
-              id="outlined-multiline-static"
-              variant="outlined"
               label="Message"
             />
           </div>
           <br />
           <button type="button" onClick={onMessageSubmit}>Send Message</button>
         </form>
-        <br/> <br/> <br/>
       </div>
     </div>
   );
