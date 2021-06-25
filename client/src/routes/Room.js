@@ -187,20 +187,30 @@ const Room = (props) => {
      const shareScreen = () => {
         setVideo(2);
         navigator.mediaDevices.getDisplayMedia({ video: true, audio: true })
-          .then((currentStream) => {
+        .then(function(currentStream) {
             setmyVideo(currentStream);
             userVideo.current.srcObject = currentStream;
-            //myVideo.streams[0].replaceTrack(myVideo.streams[0].getVideoTracks()[0], currentStream, myVideo.streams[0]);
+            peers.forEach(function(pc) {
+              pc.replaceTrack(myVideo.getVideoTracks()[0] ,currentStream.getVideoTracks()[0], myVideo);              
+            });
+          })
+          .catch(function(err) {
+            console.error('Error happens:', err);
           });
       };
 
       const stopshareScreen = () => {
         setVideo(1);
         navigator.mediaDevices.getUserMedia({ video: true, audio: true })
-          .then((currentStream) => {
+        .then(function(currentStream) {
             setmyVideo(currentStream);
             userVideo.current.srcObject = currentStream;
-            //myVideo.streams[0].replaceTrack(myVideo.streams[0].getVideoTracks()[0], currentStream, myVideo.streams[0]);
+            peers.forEach(function(pc) {
+              pc.replaceTrack(myVideo.getVideoTracks()[0] ,currentStream.getVideoTracks()[0], myVideo);              
+            });
+          })
+          .catch(function(err) {
+            console.error('Error happens:', err);
           });
       };
 
