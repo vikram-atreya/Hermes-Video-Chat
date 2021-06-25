@@ -35,20 +35,32 @@ const useStyles = makeStyles((theme) => ({
         paddingBottom: '1em',
         paddingLeft: 'auto',
       },
+    VideoBox: {
+        float:'top',
+        height: '32%',
+        width: '40%',
+        margin: '20px 20px 0px 20px',
+        flexWrap: 'wrap',
+      },
+    VideoName: {
+        textAlign: 'center',
+        backgroundColor: 'grey',
+    }
   }));
 
 const Container = styled.div`
     padding: 20px;
     display: flex;
     height: 100vh;
-    width: 90%;
-    margin: auto;
+    width: 10 px;
+    margin: 20 px;
     flex-wrap: wrap;
+    overflow: hidden;
 `;
 
 const StyledVideo = styled.video`
-    height: 40%;
-    width: 50%;
+    height: 100%;
+    width: 100%;
 `;
 
 const Video = (props) => {
@@ -201,10 +213,28 @@ const Room = (props) => {
             maxHeight: "1080px",
           }}>
             <Container>
-                <StyledVideo controls muted ref={userVideo} autoPlay playsInline />
+                <div className={classes.VideoBox}>
+                    <div>
+                        <StyledVideo controls muted ref={userVideo} autoPlay playsInline />
+                    </div>
+                    <div  className={classes.VideoName}>
+                        {name}
+                    </div>
+
+                </div>
+                
                 {peers.map((peer, index) => {
                     return (
-                        <Video key={index} peer={peer} name={name} />
+                        
+                        <div className={classes.VideoBox}>
+                            <div>
+                                <Video key={index} peer={peer} name={name} />
+                            </div>
+                            <div className={classes.VideoName}>
+                                {name}
+                            </div>
+
+                        </div>
                     );
                 })}
                 <Typography className={classes.stickToBottom}>
