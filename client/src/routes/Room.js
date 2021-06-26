@@ -52,7 +52,7 @@ const Container = styled.div`
     padding: 20px;
     display: flex;
     height: 100vh;
-    width: 10 px;
+    width: 70vw;
     margin: 20 px;
     flex-wrap: wrap;
     overflow: hidden;
@@ -73,9 +73,7 @@ const Video = (props) => {
     });
 
     return (
-        <>
         <StyledVideo controls playsInline autoPlay ref={ref} />
-        </>
     );
 }
 
@@ -186,7 +184,7 @@ const Room = (props) => {
 
      const shareScreen = () => {
         setVideo(2);
-        navigator.mediaDevices.getDisplayMedia({ video: true, audio: true })
+        navigator.mediaDevices.getDisplayMedia({ video: videoConstraints, audio: true })
         .then(function(currentStream) {
             setmyVideo(currentStream);
             userVideo.current.srcObject = currentStream;
@@ -201,7 +199,7 @@ const Room = (props) => {
 
       const stopshareScreen = () => {
         setVideo(1);
-        navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+        navigator.mediaDevices.getUserMedia({ video: videoConstraints, audio: true })
         .then(function(currentStream) {
             setmyVideo(currentStream);
             userVideo.current.srcObject = currentStream;
@@ -213,14 +211,17 @@ const Room = (props) => {
             console.error('Error happens:', err);
           });
       };
+    var h = window.innerHeight;
 
     return (
         <div style={{  
             display: "grid",  
-            gridTemplateColumns: "5fr 1fr",
+            gridTemplateColumns: "100fr 1fr",
             right: "0px",
             margin: "0px",
-            maxHeight: "1080px",
+            maxHeight: {h},
+            maxWidth: "100%",
+            overflow: "hidden",
           }}>
             <Container>
                 <div className={classes.VideoBox}>

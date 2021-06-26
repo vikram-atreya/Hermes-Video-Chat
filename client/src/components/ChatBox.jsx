@@ -51,7 +51,7 @@ function ChatBox() {
           {renderChat()}
         </div>
       </div>
-      <div>
+      <div classname="form-input">
         <form onSubmit={onMessageSubmit}>
           <h2>Send Message</h2>
           <div className="name-field">
