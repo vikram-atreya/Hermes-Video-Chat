@@ -28,6 +28,11 @@
   color: #61dafb;
 }
 
+.App-bar {
+  color: rgb(231, 14, 14);
+  height: 5vh;
+  font-size: x-large;
+}
 
 @keyframes App-logo-spin {
   from {

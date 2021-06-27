@@ -8,7 +8,7 @@ import './App.css';
 function App() {
   return (
     <>
-      <AppBar position="static">
+      <AppBar className="App-bar" position="static" height="10vh">
         Video Chat App
       </AppBar>
       <BrowserRouter>

@@ -1,17 +1,23 @@
 import { TextField } from '@material-ui/core';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useContext } from 'react';
+
 import io from 'socket.io-client';
 import '../css/ChatBox.css';
+import { NameContext } from '../Context';
 
 function ChatBox() {
-  const [state, setState] = useState({ message: '', name: '' });
+  //const { name } = useContext(NameContext);
+  const [state, setState] = useState({ message: '', name1: '' });
   const [chat, setChat] = useState([]);
+
+  const { globalName } = useContext(NameContext);
 
   const socketRef = useRef();
 
   useEffect(() => {
       socketRef.current = io.connect('http://localhost:8000');
       socketRef.current.on('message', ({ name, message }) => {
+        console.log({ name, message });
         setChat([...chat, { name, message }]);
       });
       return () => socketRef.current.disconnect();
@@ -20,14 +26,16 @@ function ChatBox() {
   );
 
   const onTextChange = (e) => {
+    console.log(state.name1);
     setState({ ...state, [e.target.name]: e.target.value });
   };
 
   const onMessageSubmit = (e) => {
     // eslint-disable-next-line
     console.log('Message submit button working');
-    const { name, message } = state;
+    var { name, message } = state;
     // eslint-disable-next-line
+    name = globalName;
     console.log({ name, message });
     socketRef.current.emit('message', { name, message });
     e.preventDefault();
@@ -47,16 +55,13 @@ function ChatBox() {
     <div className="card">
       <div className="render-chat">
         <div>
-          <h1>Chat Log</h1>
+          <h1>Chat</h1>
           {renderChat()}
         </div>
       </div>
-      <div classname="form-input">
+      <div>
         <form onSubmit={onMessageSubmit}>
           <h2>Send Message</h2>
-          <div className="name-field">
-		        <TextField name="name" onChange={(e) => onTextChange(e)} value={state.name} label="Name" />
-		      </div>
           <div>
             <TextField
               name="message"

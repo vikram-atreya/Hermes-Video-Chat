@@ -15,7 +15,6 @@ import io from "socket.io-client";
 import Peer from "simple-peer";
 
 import styled from "styled-components";
-import { lightBlue } from "@material-ui/core/colors";
 
 const useStyles = makeStyles((theme) => ({
     button: {
@@ -23,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
       alignSelf: 'center',
     },
     stickToBottom: {
-        width: '100%',
+        width: '76vw',
         position: 'fixed',
         bottom: 0,
         left: 0,
@@ -51,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
 const Container = styled.div`
     padding: 20px;
     display: flex;
-    height: 100vh;
+    height: 88vh;
     width: 70vw;
     margin: 20 px;
     flex-wrap: wrap;
@@ -92,12 +91,12 @@ const Room = (props) => {
     const userVideo = useRef();
     const peersRef = useRef([]);
     const roomID = props.match.params.roomID;
-    const { name } = useContext(NameContext);
+    const { globalName } = useContext(NameContext);
 
     const classes = useStyles();
 
     useEffect(() => {
-        console.log({name});
+        console.log({globalName});
         socketRef.current = io.connect("/");
         navigator.mediaDevices.getUserMedia({ video: videoConstraints, audio: true }).then(stream => {
             setmyVideo(stream);
@@ -130,7 +129,7 @@ const Room = (props) => {
                 item.peer.signal(payload.signal);
             });
         })
-    }, [name]);
+    }, [globalName]);
 
     function createPeer(userToSignal, callerID, stream) {
         const peer = new Peer({
@@ -229,7 +228,7 @@ const Room = (props) => {
                         <StyledVideo controls muted ref={userVideo} autoPlay playsInline />
                     </div>
                     <div  className={classes.VideoName}>
-                        {name}
+                        {globalName}
                     </div>
 
                 </div>
@@ -239,10 +238,10 @@ const Room = (props) => {
                         
                         <div className={classes.VideoBox}>
                             <div>
-                                <Video key={index} peer={peer} name={name} />
+                                <Video key={index} peer={peer} name={globalName} />
                             </div>
                             <div className={classes.VideoName}>
-                                {name}
+                                {globalName}
                             </div>
 
                         </div>
