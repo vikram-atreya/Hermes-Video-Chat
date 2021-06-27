@@ -238,10 +238,10 @@ const Room = (props) => {
                         
                         <div className={classes.VideoBox}>
                             <div>
-                                <Video key={index} peer={peer} name={globalName} />
+                                <Video key={index} peer={peer}/>
                             </div>
                             <div className={classes.VideoName}>
-                                {globalName}
+                                Placeholder
                             </div>
 
                         </div>

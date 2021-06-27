@@ -7,7 +7,7 @@ import { NameContext } from '../Context';
 
 function ChatBox() {
   //const { name } = useContext(NameContext);
-  const [state, setState] = useState({ message: '', name1: '' });
+  const [state, setState] = useState({ message: '', name: 'User' });
   const [chat, setChat] = useState([]);
 
   const { globalName } = useContext(NameContext);
@@ -26,7 +26,7 @@ function ChatBox() {
   );
 
   const onTextChange = (e) => {
-    console.log(state.name1);
+    console.log(state.name);
     setState({ ...state, [e.target.name]: e.target.value });
   };
 
@@ -34,8 +34,8 @@ function ChatBox() {
     // eslint-disable-next-line
     console.log('Message submit button working');
     var { name, message } = state;
-    // eslint-disable-next-line
-    name = globalName;
+    if(global !== '') name = globalName;
+    else name = 'User';
     console.log({ name, message });
     socketRef.current.emit('message', { name, message });
     e.preventDefault();

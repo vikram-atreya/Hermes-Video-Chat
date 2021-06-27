@@ -45,8 +45,8 @@ io.on('connection', socket => {
         }
     });
 
-    socket.on('message', ({ name1, message }) => {
-		io.emit('message', { name1, message })
+    socket.on('message', ({ name, message }) => {
+		io.emit('message', { name, message })
 	});
 
 });
