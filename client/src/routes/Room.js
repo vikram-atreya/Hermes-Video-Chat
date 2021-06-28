@@ -85,6 +85,7 @@ const videoConstraints = {
 const Room = (props) => {
     const [peers, setPeers] = useState([]);
     const [video, setVideo] = useState(1);
+    const videoState = useRef(1);
     const [audio, setAudio] = useState(1);
     const [myVideo, setmyVideo] = useState();
     const socketRef = useRef();
@@ -116,12 +117,22 @@ const Room = (props) => {
             })
 
             socketRef.current.on("user joined", payload => {
-                const peer = addPeer(payload.signal, payload.callerID, stream);
+                var peer = addPeer(payload.signal, payload.callerID, stream);
                 peersRef.current.push({
                     peerID: payload.callerID,
                     peer,
                 })
-                setPeers(users => [...users, peer]);
+                if(videoState.current === 2){
+                    navigator.mediaDevices.getDisplayMedia({ video: videoConstraints, audio: true })
+                    .then(function(currentStream) {
+        
+                    peer.replaceTrack(stream.getVideoTracks()[0] ,currentStream.getVideoTracks()[0], stream);              
+                    })
+                    .catch(function(err) {
+                        console.error('Error happens:', err);
+                    });
+                }
+                setPeers(users => [...users, peer]); 
             });
 
             socketRef.current.on("receiving returned signal", payload => {
@@ -182,6 +193,7 @@ const Room = (props) => {
      };
 
      const shareScreen = () => {
+        videoState.current = 2;
         setVideo(2);
         navigator.mediaDevices.getDisplayMedia({ video: videoConstraints, audio: true })
         .then(function(currentStream) {
@@ -197,6 +209,7 @@ const Room = (props) => {
       };
 
       const stopshareScreen = () => {
+        videoState.current = 1;
         setVideo(1);
         navigator.mediaDevices.getUserMedia({ video: videoConstraints, audio: true })
         .then(function(currentStream) {
@@ -238,10 +251,10 @@ const Room = (props) => {
                         
                         <div className={classes.VideoBox}>
                             <div>
-                                <Video key={index} peer={peer}/>
+                                <Video key={index} peer={peer} name={globalName} />
                             </div>
                             <div className={classes.VideoName}>
-                                Placeholder
+                                {globalName}
                             </div>
 
                         </div>
