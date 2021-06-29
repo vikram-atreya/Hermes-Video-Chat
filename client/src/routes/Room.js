@@ -3,13 +3,18 @@ import React, { useEffect, useRef, useState, useContext } from "react";
 import ChatBox from '../components/ChatBox';
 import { NameContext } from '../Context';
 
-import { Button, makeStyles, Typography } from '@material-ui/core';
+import { Button, makeStyles, Typography, TextField } from '@material-ui/core';
 import ScreenShareIcon from "@material-ui/icons/ScreenShare";
 import CancelPresentationIcon from '@material-ui/icons/CancelPresentation';
 import MicOffIcon from '@material-ui/icons/MicOff';
 import MicIcon from '@material-ui/icons/Mic';
 import VideocamIcon from '@material-ui/icons/Videocam';
 import VideocamOffIcon from '@material-ui/icons/VideocamOff';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 import io from "socket.io-client";
 import Peer from "simple-peer";
@@ -84,6 +89,7 @@ const videoConstraints = {
 
 const Room = (props) => {
     const [peers, setPeers] = useState([]);
+    const [peernames, setPeernames] = useState([]);
     const [video, setVideo] = useState(1);
     const videoState = useRef(1);
     const [audio, setAudio] = useState(1);
@@ -91,55 +97,83 @@ const Room = (props) => {
     const socketRef = useRef();
     const userVideo = useRef();
     const peersRef = useRef([]);
+    const peernamesRef= useRef([]);
     const roomID = props.match.params.roomID;
-    const { globalName } = useContext(NameContext);
+    const { globalName, setglobalName } = useContext(NameContext);
+    const [open, setOpen] = useState(false);
+    const [tempName, settempName] = useState({name: ''});
 
     const classes = useStyles();
 
     useEffect(() => {
-        console.log({globalName});
-        socketRef.current = io.connect("/");
-        navigator.mediaDevices.getUserMedia({ video: videoConstraints, audio: true }).then(stream => {
-            setmyVideo(stream);
-            userVideo.current.srcObject = stream;
-            socketRef.current.emit("join room", roomID);
-            socketRef.current.on("all users", users => {
-                const peers = [];
-                users.forEach(userID => {
-                    const peer = createPeer(userID, socketRef.current.id, stream);
+        console.log('running but cant do shit');
+        if(globalName === ''){
+            setOpen(true);
+        }
+        else{
+            console.log({globalName});
+            socketRef.current = io.connect("/");
+            navigator.mediaDevices.getUserMedia({ video: videoConstraints, audio: true }).then(stream => {
+                setmyVideo(stream);
+                userVideo.current.srcObject = stream;
+                socketRef.current.emit("join room", { roomID, globalName });
+
+                socketRef.current.on("all users", users => {
+                    console.log("all users running");
+                    const peers = [];
+                    users.forEach(userID => {
+                        const peer = createPeer(userID, socketRef.current.id, stream);
+                        peersRef.current.push({
+                            peerID: userID,
+                            peer,
+                        })
+                        peers.push(peer);
+                    })
+                    setPeers(peers);
+                });
+
+                socketRef.current.on("all usernames", usernames => {
+                    console.log("all usernames running");
+                    const peernames = [];
+                    usernames.forEach(username => {
+                        peernamesRef.current.push(username);
+                        peernames.push(username);
+                    })
+                    setPeernames(peernames);
+                    console.log(peernames);              
+                }); 
+
+                socketRef.current.on("user joined", payload => {
+                    var peer = addPeer(payload.signal, payload.callerID, stream);
+                    var peername = payload.name;
+                    console.log(peername);
                     peersRef.current.push({
-                        peerID: userID,
+                        peerID: payload.callerID,
                         peer,
                     })
-                    peers.push(peer);
-                })
-                setPeers(peers);
+                    peernamesRef.current.push(peername);
+                    if(videoState.current === 2){
+                        navigator.mediaDevices.getDisplayMedia({ video: videoConstraints, audio: true })
+                        .then(function(currentStream) {
+            
+                        peer.replaceTrack(stream.getVideoTracks()[0] ,currentStream.getVideoTracks()[0], stream);              
+                        })
+                        .catch(function(err) {
+                            console.error('Error happens:', err);
+                        });
+                    }
+                    setPeers(users => [...users, peer]); 
+                    setPeernames(usernames => [...usernames, peername]);
+                    console.log(peernamesRef.current);
+                });
+
+                socketRef.current.on("receiving returned signal", payload => {
+                    const item = peersRef.current.find(p => p.peerID === payload.id);
+                    item.peer.signal(payload.signal);
+                    console.log(peernames);
+                });
             })
-
-            socketRef.current.on("user joined", payload => {
-                var peer = addPeer(payload.signal, payload.callerID, stream);
-                peersRef.current.push({
-                    peerID: payload.callerID,
-                    peer,
-                })
-                if(videoState.current === 2){
-                    navigator.mediaDevices.getDisplayMedia({ video: videoConstraints, audio: true })
-                    .then(function(currentStream) {
-        
-                    peer.replaceTrack(stream.getVideoTracks()[0] ,currentStream.getVideoTracks()[0], stream);              
-                    })
-                    .catch(function(err) {
-                        console.error('Error happens:', err);
-                    });
-                }
-                setPeers(users => [...users, peer]); 
-            });
-
-            socketRef.current.on("receiving returned signal", payload => {
-                const item = peersRef.current.find(p => p.peerID === payload.id);
-                item.peer.signal(payload.signal);
-            });
-        })
+        }
     }, [globalName]);
 
     function createPeer(userToSignal, callerID, stream) {
@@ -150,7 +184,7 @@ const Room = (props) => {
         });
 
         peer.on("signal", signal => {
-            socketRef.current.emit("sending signal", { userToSignal, callerID, signal })
+            socketRef.current.emit("sending signal", { userToSignal, callerID, signal, globalName })
         })
 
         return peer;
@@ -223,6 +257,16 @@ const Room = (props) => {
             console.error('Error happens:', err);
           });
       };
+    
+      const handleModalClose = () => {
+        console.log(tempName.name);
+        setglobalName(tempName.name);
+        setOpen(false);
+      };
+      const onTextChange = (e) => {
+        settempName({ ...tempName, [e.target.name]: e.target.value });
+        console.log(tempName.name);
+      };
     var h = window.innerHeight;
 
     return (
@@ -236,6 +280,27 @@ const Room = (props) => {
             overflow: "hidden",
           }}>
             <Container>
+                <div>
+                    <Dialog open={open} onClose={handleModalClose} aria-labelledby="form-dialog-title">
+                        <DialogTitle id="form-dialog-title">Please enter your name</DialogTitle>
+                        <DialogContent>
+                        <TextField
+                            autoFocus
+                            margin="dense"
+                            name="name"
+                            label="Name"
+                            fullWidth
+                            onChange={(e) => onTextChange(e)}
+                            value={tempName.name}
+                        />
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={handleModalClose} color="primary">
+                                Submit
+                            </Button>
+                        </DialogActions>
+                    </Dialog>
+                </div>
                 <div className={classes.VideoBox}>
                     <div>
                         <StyledVideo controls muted ref={userVideo} autoPlay playsInline />
@@ -248,13 +313,12 @@ const Room = (props) => {
                 
                 {peers.map((peer, index) => {
                     return (
-                        
                         <div className={classes.VideoBox}>
                             <div>
                                 <Video key={index} peer={peer} name={globalName} />
                             </div>
                             <div className={classes.VideoName}>
-                                {globalName}
+                                {peernamesRef.current[index]}
                             </div>
 
                         </div>

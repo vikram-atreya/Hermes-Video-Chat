@@ -7,11 +7,12 @@ const socket = require("socket.io");
 const io = socket(server);
 
 const users = {};
+const usernames = {};
 
 const socketToRoom = {};
 
 io.on('connection', socket => {
-    socket.on("join room", roomID => {
+    socket.on("join room", ({roomID, globalName}) => {
         if (users[roomID]) {
             const length = users[roomID].length;
             if (length === 4) {
@@ -19,17 +20,21 @@ io.on('connection', socket => {
                 return;
             }
             users[roomID].push(socket.id);
+            usernames[roomID].push(globalName);
         } else {
             users[roomID] = [socket.id];
+            usernames[roomID] = [globalName];
         }
         socketToRoom[socket.id] = roomID;
         const usersInThisRoom = users[roomID].filter(id => id !== socket.id);
+        const usernamesInThisRoom = usernames[roomID].filter(name => name !== globalName);
 
         socket.emit("all users", usersInThisRoom);
+        socket.emit("all usernames", usernamesInThisRoom);
     });
 
     socket.on("sending signal", payload => {
-        io.to(payload.userToSignal).emit('user joined', { signal: payload.signal, callerID: payload.callerID });
+        io.to(payload.userToSignal).emit('user joined', { signal: payload.signal, callerID: payload.callerID, name: payload.globalName });
     });
 
     socket.on("returning signal", payload => {

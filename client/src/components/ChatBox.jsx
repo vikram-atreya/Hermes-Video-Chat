@@ -26,7 +26,6 @@ function ChatBox() {
   );
 
   const onTextChange = (e) => {
-    console.log(state.name);
     setState({ ...state, [e.target.name]: e.target.value });
   };
 
