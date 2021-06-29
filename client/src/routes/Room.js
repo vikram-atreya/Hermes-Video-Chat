@@ -1,9 +1,10 @@
 import React, { useEffect, useRef, useState, useContext } from "react";
 
 import ChatBox from '../components/ChatBox';
+import RoomAppbar from '../components/RoomAppBar';
 import { NameContext } from '../Context';
 
-import { Button, makeStyles, Typography, TextField } from '@material-ui/core';
+import { Button, makeStyles, Typography, TextField, Drawer } from '@material-ui/core';
 import ScreenShareIcon from "@material-ui/icons/ScreenShare";
 import CancelPresentationIcon from '@material-ui/icons/CancelPresentation';
 import MicOffIcon from '@material-ui/icons/MicOff';
@@ -15,6 +16,8 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import IconButton from '@material-ui/core/IconButton';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 
 import io from "socket.io-client";
 import Peer from "simple-peer";
@@ -91,24 +94,28 @@ const Room = (props) => {
     const [peers, setPeers] = useState([]);
     const [peernames, setPeernames] = useState([]);
     const [video, setVideo] = useState(1);
-    const videoState = useRef(1);
     const [audio, setAudio] = useState(1);
     const [myVideo, setmyVideo] = useState();
+    const [tempName, settempName] = useState({name: ''});
+    const [nameModalopen, setnameModalOpen] = useState(false);
+
+
+    const videoState = useRef(1);
     const socketRef = useRef();
     const userVideo = useRef();
     const peersRef = useRef([]);
     const peernamesRef= useRef([]);
+
     const roomID = props.match.params.roomID;
     const { globalName, setglobalName } = useContext(NameContext);
-    const [open, setOpen] = useState(false);
-    const [tempName, settempName] = useState({name: ''});
+    const { chatDrawerOpen, setChatDraweropen } = useContext(NameContext);
 
     const classes = useStyles();
 
     useEffect(() => {
         console.log('running but cant do shit');
         if(globalName === ''){
-            setOpen(true);
+            setnameModalOpen(true);
         }
         else{
             console.log({globalName});
@@ -261,15 +268,26 @@ const Room = (props) => {
       const handleModalClose = () => {
         console.log(tempName.name);
         setglobalName(tempName.name);
-        setOpen(false);
+        setnameModalOpen(false);
       };
+
+      const handleChatDrawerClose = () => {
+        console.log("button works");
+        setChatDraweropen(false);
+        console.log(chatDrawerOpen);
+      };
+
       const onTextChange = (e) => {
         settempName({ ...tempName, [e.target.name]: e.target.value });
         console.log(tempName.name);
       };
+
+
     var h = window.innerHeight;
 
     return (
+        <>
+        <RoomAppbar />
         <div style={{  
             display: "grid",  
             gridTemplateColumns: "100fr 1fr",
@@ -281,7 +299,7 @@ const Room = (props) => {
           }}>
             <Container>
                 <div>
-                    <Dialog open={open} onClose={handleModalClose} aria-labelledby="form-dialog-title">
+                    <Dialog open={nameModalopen} onClose={handleModalClose} aria-labelledby="form-dialog-title">
                         <DialogTitle id="form-dialog-title">Please enter your name</DialogTitle>
                         <DialogContent>
                         <TextField
@@ -346,9 +364,19 @@ const Room = (props) => {
                     )}
                 </Typography>
             </Container>
-            <ChatBox />
+            <Drawer 
+                open={chatDrawerOpen}
+                variant="persistent"
+                anchor="right"
+                >
+                <IconButton onClick={handleChatDrawerClose}>
+                     <ChevronRightIcon />
+                </IconButton>
+                <ChatBox />
+            </Drawer>
+            
         </div>
-        
+        </>
     );
 };
 

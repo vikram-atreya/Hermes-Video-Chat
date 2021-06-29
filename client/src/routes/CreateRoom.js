@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { TextField, makeStyles } from '@material-ui/core';
+import { TextField, makeStyles, AppBar } from '@material-ui/core';
 import { v1 as uuid } from "uuid";
 import { NameContext } from '../Context.js';
 
@@ -29,14 +29,18 @@ const CreateRoom = (props) => {
       };
 
 return (
-    <form onSubmit={create} className={classes.Container}>
-        <h2>Enter your display name</h2>
-        <div>
-            <TextField name="name" value={state.name} onChange={(e) => onTextChange(e)} label="Name"/>
-        </div>
-        <button>Create room</button>
-    </form>
-    
+    <>
+        <AppBar className="App-bar" position="static" height="10vh">
+            Video Chat App
+        </AppBar>
+        <form onSubmit={create} className={classes.Container}>
+            <h2>Enter your display name</h2>
+            <div>
+                <TextField name="name" value={state.name} onChange={(e) => onTextChange(e)} label="Name"/>
+            </div>
+            <button>Create room</button>
+        </form>
+    </>
 );
 }
 

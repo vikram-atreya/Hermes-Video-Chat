@@ -8,9 +8,6 @@ import './App.css';
 function App() {
   return (
     <>
-      <AppBar className="App-bar" position="static" height="10vh">
-        Video Chat App
-      </AppBar>
       <BrowserRouter>
         <Switch>
           <Route path="/" exact component={CreateRoom} />
