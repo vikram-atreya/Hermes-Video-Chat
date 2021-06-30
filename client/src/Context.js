@@ -5,6 +5,7 @@ const NameContext = createContext();
 const ContextProvider = ({ children }) => {
   const [globalName, setglobalName] = useState('');
   const [chatDrawerOpen, setChatDraweropen] = useState(false);
+  const [peopleDrawerOpen, setPeopleDraweropen] = useState(false);
 
 
   return (
@@ -13,6 +14,8 @@ const ContextProvider = ({ children }) => {
       setglobalName,
       chatDrawerOpen,
       setChatDraweropen,
+      peopleDrawerOpen,
+      setPeopleDraweropen,
     }}
     >
       {children}

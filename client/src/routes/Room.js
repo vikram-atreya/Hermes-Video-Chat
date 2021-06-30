@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState, useContext } from "react";
 
 import ChatBox from '../components/ChatBox';
+import ParticipantList from '../components/ParticipantList';
 import RoomAppbar from '../components/RoomAppBar';
 import { NameContext } from '../Context';
 
@@ -109,6 +110,7 @@ const Room = (props) => {
     const roomID = props.match.params.roomID;
     const { globalName, setglobalName } = useContext(NameContext);
     const { chatDrawerOpen, setChatDraweropen } = useContext(NameContext);
+    const { peopleDrawerOpen, setPeopleDraweropen } = useContext(NameContext);
 
     const classes = useStyles();
 
@@ -277,6 +279,12 @@ const Room = (props) => {
         console.log(chatDrawerOpen);
       };
 
+      const handlePeopleDrawerClose = () => {
+        console.log("button works");
+        setPeopleDraweropen(false);
+        console.log(chatDrawerOpen);
+      };
+
       const onTextChange = (e) => {
         settempName({ ...tempName, [e.target.name]: e.target.value });
         console.log(tempName.name);
@@ -338,7 +346,6 @@ const Room = (props) => {
                             <div className={classes.VideoName}>
                                 {peernamesRef.current[index]}
                             </div>
-
                         </div>
                     );
                 })}
@@ -373,6 +380,16 @@ const Room = (props) => {
                      <ChevronRightIcon />
                 </IconButton>
                 <ChatBox />
+            </Drawer>
+            <Drawer 
+                open={peopleDrawerOpen}
+                variant="persistent"
+                anchor="right"
+                >
+                <IconButton onClick={handlePeopleDrawerClose}>
+                     <ChevronRightIcon />
+                </IconButton>
+                <ParticipantList usernames={peernamesRef.current}/>
             </Drawer>
             
         </div>

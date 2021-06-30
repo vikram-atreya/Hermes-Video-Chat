@@ -6,6 +6,7 @@ import { Typography, IconButton } from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import ChatIcon from '@material-ui/icons/Chat';
+import PeopleIcon from '@material-ui/icons/People';
 
 import { NameContext } from '../Context';
 
@@ -38,11 +39,20 @@ const RoomAppbar = () => {
     const classes = useStyles();
     const theme = useTheme();
     const { chatDrawerOpen, setChatDraweropen } = useContext(NameContext);
+    const { peopleDrawerOpen, setPeopleDraweropen } = useContext(NameContext);
 
     const handleChatDrawerOpen = () => {
-        console.log("app bar button works");
+        console.log("app bar chat button works");
         setChatDraweropen(true);
+        setPeopleDraweropen(false);
         console.log(chatDrawerOpen);
+      };
+
+      const handlePeopleDrawerOpen = () => {
+        console.log("app bar people button works");
+        setPeopleDraweropen(true);
+        setChatDraweropen(false);
+        console.log(peopleDrawerOpen);
       };
 
 
@@ -58,6 +68,15 @@ return (
           <Typography className={classes.title}>
               Video Chat App
           </Typography>
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            edge="end"
+            onClick={handlePeopleDrawerOpen}
+            className={clsx(peopleDrawerOpen && classes.hide)}
+          >
+            <PeopleIcon />
+          </IconButton>
           <IconButton
             color="inherit"
             aria-label="open drawer"
