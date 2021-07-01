@@ -2,10 +2,16 @@ import React, { useState, useContext } from "react";
 import { TextField, makeStyles, AppBar } from "@material-ui/core";
 import { v1 as uuid } from "uuid";
 import { NameContext } from "../Context.js";
+import "../css/CreateRoom.css";
 
 const useStyles = makeStyles(() => ({
   Container: {
-    height: "20vh",
+    height: "25vh",
+    display: "wrap",
+    flexDirection: "column",
+    width: "40vh",
+    marginLeft: "10vh",
+    alignItems: "center",
   },
 }));
 
@@ -32,6 +38,12 @@ const CreateRoom = (props) => {
       <AppBar className='App-bar' position='static' height='10vh'>
         Video Chat App
       </AppBar>
+      <div class='outer-typewriter'>
+        <div class='typewriter'>
+          <h1>Welcome to my Video Chat App.</h1>
+        </div>
+      </div>
+
       <form onSubmit={create} className={classes.Container}>
         <h2>Enter your display name</h2>
         <div>
