@@ -31,8 +31,7 @@ io.on("connection", (socket) => {
       (name) => name !== globalName
     );
 
-    socket.emit("all users", usersInThisRoom);
-    socket.emit("all usernames", usernamesInThisRoom);
+    socket.emit("all users", { usersInThisRoom, usernamesInThisRoom });
   });
 
   socket.on("sending signal", (payload) => {

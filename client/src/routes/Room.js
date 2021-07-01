@@ -99,7 +99,7 @@ const videoConstraints = {
 
 const Room = (props) => {
   const [peers, setPeers] = useState([]);
-  const [peernames, setPeernames] = useState([]);
+  //const [peernames, setPeernames] = useState([]);
   const [video, setVideo] = useState(1);
   const [audio, setAudio] = useState(1);
   const [record, setRecord] = useState(0);
@@ -112,7 +112,7 @@ const Room = (props) => {
   const socketRef = useRef();
   const userVideo = useRef();
   const peersRef = useRef([]);
-  const peernamesRef = useRef([]);
+  //const peernamesRef = useRef([]);
 
   const roomID = props.match.params.roomID;
   const { globalName, setglobalName } = useContext(NameContext);
@@ -122,11 +122,9 @@ const Room = (props) => {
   const classes = useStyles();
 
   useEffect(() => {
-    console.log("running but cant do shit");
     if (globalName === "") {
       setnameModalOpen(true);
     } else {
-      console.log({ globalName });
       socketRef.current = io.connect("/");
       navigator.mediaDevices
         .getUserMedia({ video: videoConstraints, audio: true })
@@ -135,33 +133,27 @@ const Room = (props) => {
           userVideo.current.srcObject = stream;
           socketRef.current.emit("join room", { roomID, globalName });
 
-          socketRef.current.on("all users", (users) => {
-            console.log("all users running");
-            const peers = [];
-            users.forEach((userID) => {
-              const peer = createPeer(userID, socketRef.current.id, stream);
-              peersRef.current.push({
-                peerID: userID,
-                peer,
+          socketRef.current.on(
+            "all users",
+            ({ usersInThisRoom, usernamesInThisRoom }) => {
+              const peers = [];
+              usersInThisRoom.forEach((userID, index) => {
+                const peer = createPeer(userID, socketRef.current.id, stream);
+                const peername = usernamesInThisRoom[index];
+                peersRef.current.push({
+                  peerID: userID,
+                  peer,
+                  peername,
+                });
+                peers.push({
+                  peerID: userID,
+                  peer,
+                  peername,
+                });
               });
-              peers.push({
-                peerID: userID,
-                peer,
-              });
-            });
-            setPeers(peers);
-          });
-
-          socketRef.current.on("all usernames", (usernames) => {
-            console.log("all usernames running");
-            const peernames = [];
-            usernames.forEach((username) => {
-              peernamesRef.current.push(username);
-              peernames.push(username);
-            });
-            setPeernames(peernames);
-            console.log(peernames);
-          });
+              setPeers(peers);
+            }
+          );
 
           socketRef.current.on("user joined", (payload) => {
             var peer = addPeer(payload.signal, payload.callerID, stream);
@@ -180,26 +172,23 @@ const Room = (props) => {
                   console.error("Error happens:", err);
                 });
             }
-            console.log(peername);
             peersRef.current.push({
               peerID: payload.callerID,
               peer,
+              peername,
             });
             const peerObj = {
               peer,
               peerID: payload.callerID,
+              peername,
             };
-            peernamesRef.current.push(peername);
 
             setPeers((users) => [...users, peerObj]);
-            setPeernames((usernames) => [...usernames, peername]);
-            console.log(peernamesRef.current);
           });
 
           socketRef.current.on("receiving returned signal", (payload) => {
             const item = peersRef.current.find((p) => p.peerID === payload.id);
             item.peer.signal(payload.signal);
-            console.log(peernames);
           });
 
           socketRef.current.on("user left", (id) => {
@@ -349,26 +338,20 @@ const Room = (props) => {
   };
 
   const handleModalClose = () => {
-    console.log(tempName.name);
     setglobalName(tempName.name);
     setnameModalOpen(false);
   };
 
   const handleChatDrawerClose = () => {
-    console.log("button works");
     setChatDraweropen(false);
-    console.log(chatDrawerOpen);
   };
 
   const handlePeopleDrawerClose = () => {
-    console.log("button works");
     setPeopleDraweropen(false);
-    console.log(chatDrawerOpen);
   };
 
   const onTextChange = (e) => {
     settempName({ ...tempName, [e.target.name]: e.target.value });
-    console.log(tempName.name);
   };
 
   var h = window.innerHeight;
@@ -434,9 +417,7 @@ const Room = (props) => {
                 <div>
                   <Video key={peer.peerID} peer={peer.peer} name={globalName} />
                 </div>
-                <div className={classes.VideoName}>
-                  {peernamesRef.current[index]}
-                </div>
+                <div className={classes.VideoName}>{peers[index].peername}</div>
               </div>
             );
           })}
@@ -540,7 +521,7 @@ const Room = (props) => {
           <IconButton onClick={handlePeopleDrawerClose}>
             <ChevronRightIcon />
           </IconButton>
-          <ParticipantList usernames={peernamesRef.current} />
+          <ParticipantList usernames={peersRef.current} />
         </Drawer>
       </div>
     </>

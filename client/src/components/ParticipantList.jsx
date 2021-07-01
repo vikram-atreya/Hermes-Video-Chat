@@ -18,18 +18,17 @@ const useStyles = makeStyles(() => ({
 
 const ParticipantList = (props) => {
   const classes = useStyles();
-  console.log(props.usernames);
 
   return (
     <div className={classes.item}>
       <div>No of participants = {props.usernames.length}</div>
       <div>Me</div>
       <div>Markdown name</div>
-      {props.usernames.map((peername, index) => {
-        console.log("forEach runs");
+      {console.log(props.usernames)}
+      {props.usernames.map((user, index) => {
         return (
           <div>
-            {index}) {peername}
+            {index}) {user.peername}
           </div>
         );
       })}
