@@ -19,8 +19,8 @@ import MicIcon from "@material-ui/icons/Mic";
 import VideocamIcon from "@material-ui/icons/Videocam";
 import VideocamOffIcon from "@material-ui/icons/VideocamOff";
 import CallEndIcon from "@material-ui/icons/ScreenShare";
-import StopIcon from '@material-ui/icons/Stop';
-import AlbumIcon from '@material-ui/icons/Album';
+import StopIcon from "@material-ui/icons/Stop";
+import AlbumIcon from "@material-ui/icons/Album";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -143,9 +143,9 @@ const Room = (props) => {
               peersRef.current.push({
                 peerID: userID,
                 peer,
-              })
+              });
               peers.push({
-                peerID : userID,
+                peerID: userID,
                 peer,
               });
             });
@@ -187,10 +187,10 @@ const Room = (props) => {
             });
             const peerObj = {
               peer,
-              peerID: payload.callerID
-            }
+              peerID: payload.callerID,
+            };
             peernamesRef.current.push(peername);
-            
+
             setPeers((users) => [...users, peerObj]);
             setPeernames((usernames) => [...usernames, peername]);
             console.log(peernamesRef.current);
@@ -202,15 +202,15 @@ const Room = (props) => {
             console.log(peernames);
           });
 
-          socketRef.current.on("user left", id =>{
-            const peerObj = peersRef.current.find(p => p.peerID === id);
-            if(peerObj){
+          socketRef.current.on("user left", (id) => {
+            const peerObj = peersRef.current.find((p) => p.peerID === id);
+            if (peerObj) {
               peerObj.peer.destroy();
             }
-            const peers= peersRef.current.filter(p => p.peerID !== id);
+            const peers = peersRef.current.filter((p) => p.peerID !== id);
             peersRef.current = peers;
             setPeers(peers);
-          })
+          });
         });
     }
   }, [globalName]);
@@ -317,38 +317,36 @@ const Room = (props) => {
 
   const Startrecording = () => {
     setRecord(1);
-    navigator.mediaDevices.getDisplayMedia({ video: videoConstraints, audio: true }).then(stream => {
-      mediaRecorder= new MediaRecorder(stream);
-      mediaRecorder.start(1000);
+    navigator.mediaDevices
+      .getDisplayMedia({ video: videoConstraints, audio: true })
+      .then((stream) => {
+        mediaRecorder = new MediaRecorder(stream);
+        mediaRecorder.start(1000);
 
-      mediaRecorder.ondataavailable = function (e) {
-        parts.push(e.data);
-      };
-    });
-
+        mediaRecorder.ondataavailable = function (e) {
+          parts.push(e.data);
+        };
+      });
   };
 
   const Stoprecording = () => {
     setRecord(0);
     mediaRecorder.stop();
-    const blob = new Blob(parts,{
-      type : "video/webm"      
+    const blob = new Blob(parts, {
+      type: "video/webm",
     });
-    const url= URL.createObjectURL(blob);
+    const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.style = "display: none";
-    a.href= url;
+    a.href = url;
     a.download = "test.webm";
     a.click();
-  }
-
-  const Disconnect = () => {
-    socketRef.current.emit('disconnect');
-    window.location.reload();
-
   };
 
-
+  const Disconnect = () => {
+    socketRef.current.emit("disconnect");
+    window.location.reload();
+  };
 
   const handleModalClose = () => {
     console.log(tempName.name);
@@ -430,7 +428,7 @@ const Room = (props) => {
             <div className={classes.VideoName}>{globalName}</div>
           </div>
 
-          {peers.map((peer,index) => {
+          {peers.map((peer, index) => {
             return (
               <div className={classes.VideoBox}>
                 <div>
@@ -500,34 +498,36 @@ const Room = (props) => {
             )}
 
             {record === 1 ? (
-              <Button className={classes.button} 
-              variant="contained" 
-              color="#f44336[900]" 
-              startIcon={<StopIcon fontSize="large" />} 
-              onClick={() => Stoprecording()}
+              <Button
+                className={classes.button}
+                variant='contained'
+                color='#f44336[900]'
+                startIcon={<StopIcon fontSize='large' />}
+                onClick={() => Stoprecording()}
               >
                 Stop recording
               </Button>
             ) : (
-            <Button className={classes.button} 
-            variant="contained" 
-            color="#f44336[900]" 
-            startIcon={<AlbumIcon fontSize="large" />} 
-            onClick={() => Startrecording()}
-            >
-              Start recording
-            </Button>
+              <Button
+                className={classes.button}
+                variant='contained'
+                color='#f44336[900]'
+                startIcon={<AlbumIcon fontSize='large' />}
+                onClick={() => Startrecording()}
+              >
+                Start recording
+              </Button>
             )}
 
-            
-            <Button className={classes.button} 
-            variant="contained" 
-            color="#f44336[900]" 
-            startIcon={<CallEndIcon fontSize="large" />} 
-            onClick={() => Disconnect()}
+            <Button
+              className={classes.button}
+              variant='contained'
+              color='#f44336[900]'
+              startIcon={<CallEndIcon fontSize='large' />}
+              onClick={() => Disconnect()}
             >
-                Disconnect
-              </Button>
+              Disconnect
+            </Button>
           </Typography>
         </Container>
         <Drawer open={chatDrawerOpen} variant='persistent' anchor='right'>
