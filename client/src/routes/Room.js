@@ -18,6 +18,7 @@ import MicOffIcon from "@material-ui/icons/MicOff";
 import MicIcon from "@material-ui/icons/Mic";
 import VideocamIcon from "@material-ui/icons/Videocam";
 import VideocamOffIcon from "@material-ui/icons/VideocamOff";
+import CallEndIcon from "@material-ui/icons/ScreenShare";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -100,6 +101,7 @@ const Room = (props) => {
   const [video, setVideo] = useState(1);
   const [audio, setAudio] = useState(1);
   const [myVideo, setmyVideo] = useState();
+  const [callEnded, setCallEnded] = useState();
   const [tempName, settempName] = useState({ name: "" });
   const [nameModalopen, setnameModalOpen] = useState(false);
 
@@ -138,8 +140,11 @@ const Room = (props) => {
               peersRef.current.push({
                 peerID: userID,
                 peer,
+              })
+              peers.push({
+                peerID : userID,
+                peer,
               });
-              peers.push(peer);
             });
             setPeers(peers);
           });
@@ -158,12 +163,6 @@ const Room = (props) => {
           socketRef.current.on("user joined", (payload) => {
             var peer = addPeer(payload.signal, payload.callerID, stream);
             var peername = payload.name;
-            console.log(peername);
-            peersRef.current.push({
-              peerID: payload.callerID,
-              peer,
-            });
-            peernamesRef.current.push(peername);
             if (videoState.current === 2) {
               navigator.mediaDevices
                 .getDisplayMedia({ video: videoConstraints, audio: true })
@@ -178,7 +177,18 @@ const Room = (props) => {
                   console.error("Error happens:", err);
                 });
             }
-            setPeers((users) => [...users, peer]);
+            console.log(peername);
+            peersRef.current.push({
+              peerID: payload.callerID,
+              peer,
+            });
+            const peerObj = {
+              peer,
+              peerID: payload.callerID
+            }
+            peernamesRef.current.push(peername);
+            
+            setPeers((users) => [...users, peerObj]);
             setPeernames((usernames) => [...usernames, peername]);
             console.log(peernamesRef.current);
           });
@@ -188,6 +198,16 @@ const Room = (props) => {
             item.peer.signal(payload.signal);
             console.log(peernames);
           });
+
+          socketRef.current.on("user left", id =>{
+            const peerObj = peersRef.current.find(p => p.peerID === id);
+            if(peerObj){
+              peerObj.peer.destroy();
+            }
+            const peers= peersRef.current.filter(p => p.peerID !== id);
+            peersRef.current = peers;
+            setPeers(peers);
+          })
         });
     }
   }, [globalName]);
@@ -289,6 +309,14 @@ const Room = (props) => {
       });
   };
 
+  const Disconnect = () => {
+    socketRef.current.emit('disconnect');
+    window.location.reload();
+
+  };
+
+
+
   const handleModalClose = () => {
     console.log(tempName.name);
     setglobalName(tempName.name);
@@ -369,11 +397,11 @@ const Room = (props) => {
             <div className={classes.VideoName}>{globalName}</div>
           </div>
 
-          {peers.map((peer, index) => {
+          {peers.map((peer,index) => {
             return (
               <div className={classes.VideoBox}>
                 <div>
-                  <Video key={index} peer={peer} name={globalName} />
+                  <Video key={peer.peerID} peer={peer.peer} name={globalName} />
                 </div>
                 <div className={classes.VideoName}>
                   {peernamesRef.current[index]}
@@ -437,6 +465,14 @@ const Room = (props) => {
                 Stop Sharin
               </Button>
             )}
+            <Button className={classes.button} 
+            variant="contained" 
+            color="#f44336[900]" 
+            startIcon={<CallEndIcon fontSize="large" />} 
+            onClick={() => Disconnect()}
+            >
+                Disconnect
+              </Button>
           </Typography>
         </Container>
         <Drawer open={chatDrawerOpen} variant='persistent' anchor='right'>
