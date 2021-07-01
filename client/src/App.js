@@ -1,17 +1,17 @@
-import React from 'react';
+import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-import AppBar from '@material-ui/core/AppBar';
+import AppBar from "@material-ui/core/AppBar";
 import CreateRoom from "./routes/CreateRoom";
 import Room from "./routes/Room";
-import './App.css';
+import "./App.css";
 
 function App() {
   return (
     <>
       <BrowserRouter>
         <Switch>
-          <Route path="/" exact component={CreateRoom} />
-          <Route path="/room/:roomID" component={Room} />
+          <Route path='/' exact component={CreateRoom} />
+          <Route path='/room/:roomID' component={Room} />
         </Switch>
       </BrowserRouter>
     </>
