@@ -7,31 +7,30 @@ const socket = require("socket.io");
 const io = socket(server);
 
 const users = {};
-const usernames = {};
 
 const socketToRoom = {};
 
 io.on("connection", (socket) => {
   socket.on("join room", ({ roomID, globalName }) => {
+    let UserID = socket.id;
     if (users[roomID]) {
       const length = users[roomID].length;
       if (length === 4) {
         socket.emit("room full");
         return;
       }
-      users[roomID].push(socket.id);
-      usernames[roomID].push(globalName);
+      users[roomID].push({ id: UserID, name: globalName });
     } else {
-      users[roomID] = [socket.id];
-      usernames[roomID] = [globalName];
+      users[roomID] = [{ id: UserID, name: globalName }];
     }
     socketToRoom[socket.id] = roomID;
-    const usersInThisRoom = users[roomID].filter((id) => id !== socket.id);
-    const usernamesInThisRoom = usernames[roomID].filter(
-      (name) => name !== globalName
-    );
+    const usersInThisRoom = users[roomID].filter((user) => {
+      if (user.id !== socket.id) {
+        return user;
+      }
+    });
 
-    socket.emit("all users", { usersInThisRoom, usernamesInThisRoom });
+    socket.emit("all users", usersInThisRoom);
   });
 
   socket.on("sending signal", (payload) => {
@@ -53,7 +52,11 @@ io.on("connection", (socket) => {
     const roomID = socketToRoom[socket.id];
     let room = users[roomID];
     if (room) {
-      room = room.filter((id) => id !== socket.id);
+      room = room.filter((user) => {
+        if (user.id !== socket.id) {
+          return user;
+        }
+      }); //TO-DO: add ref for usernames as well
       users[roomID] = room;
     }
     socket.broadcast.emit("user left", socket.id);

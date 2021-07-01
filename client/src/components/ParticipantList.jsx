@@ -21,14 +21,13 @@ const ParticipantList = (props) => {
 
   return (
     <div className={classes.item}>
-      <div>No of participants = {props.usernames.length}</div>
-      <div>Me</div>
-      <div>Markdown name</div>
+      <div>No of participants = {props.usernames.length + 1}</div>
+      <div>1) Me</div>
       {console.log(props.usernames)}
       {props.usernames.map((user, index) => {
         return (
           <div>
-            {index}) {user.peername}
+            {index + 2}) {user.peername}
           </div>
         );
       })}
