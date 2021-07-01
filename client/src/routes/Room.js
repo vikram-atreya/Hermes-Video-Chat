@@ -155,18 +155,11 @@ const Room = (props) => {
             var peer = addPeer(payload.signal, payload.callerID, stream);
             var peername = payload.name;
             if (videoState.current === 2) {
-              navigator.mediaDevices
-                .getDisplayMedia({ video: videoConstraints, audio: true })
-                .then(function (currentStream) {
-                  peer.replaceTrack(
-                    stream.getVideoTracks()[0],
-                    currentStream.getVideoTracks()[0],
-                    stream
-                  );
-                })
-                .catch(function (err) {
-                  console.error("Error happens:", err);
-                });
+              peer.replaceTrack(
+                stream.getVideoTracks()[0],
+                userVideo.current.srcObject.getVideoTracks()[0],
+                stream
+              );
             }
             peersRef.current.push({
               peerID: payload.callerID,
@@ -264,7 +257,7 @@ const Room = (props) => {
         setmyVideo(currentStream);
         userVideo.current.srcObject = currentStream;
         peers.forEach(function (pc) {
-          pc.replaceTrack(
+          pc.peer.replaceTrack(
             myVideo.getVideoTracks()[0],
             currentStream.getVideoTracks()[0],
             myVideo
@@ -285,7 +278,7 @@ const Room = (props) => {
         setmyVideo(currentStream);
         userVideo.current.srcObject = currentStream;
         peers.forEach(function (pc) {
-          pc.replaceTrack(
+          pc.peer.replaceTrack(
             myVideo.getVideoTracks()[0],
             currentStream.getVideoTracks()[0],
             myVideo
@@ -406,8 +399,9 @@ const Room = (props) => {
             </div>
             <div className={classes.VideoName}>{globalName}</div>
           </div>
-
-          {peers.map((peer, index) => {
+          {console.log(peers)}
+          {peersRef.current.map((peer, index) => {
+            //bug might arise from peersRef, s/peersRef/peers/g
             return (
               <div className={classes.VideoBox}>
                 <div>
