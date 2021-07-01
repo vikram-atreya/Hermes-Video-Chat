@@ -19,6 +19,8 @@ import MicIcon from "@material-ui/icons/Mic";
 import VideocamIcon from "@material-ui/icons/Videocam";
 import VideocamOffIcon from "@material-ui/icons/VideocamOff";
 import CallEndIcon from "@material-ui/icons/ScreenShare";
+import StopIcon from '@material-ui/icons/Stop';
+import AlbumIcon from '@material-ui/icons/Album';
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -100,6 +102,7 @@ const Room = (props) => {
   const [peernames, setPeernames] = useState([]);
   const [video, setVideo] = useState(1);
   const [audio, setAudio] = useState(1);
+  const [record, setRecord] = useState(0);
   const [myVideo, setmyVideo] = useState();
   const [callEnded, setCallEnded] = useState();
   const [tempName, settempName] = useState({ name: "" });
@@ -309,6 +312,36 @@ const Room = (props) => {
       });
   };
 
+  const parts = [];
+  let mediaRecorder;
+
+  const Startrecording = () => {
+    setRecord(1);
+    navigator.mediaDevices.getDisplayMedia({ video: videoConstraints, audio: true }).then(stream => {
+      mediaRecorder= new MediaRecorder(stream);
+      mediaRecorder.start(1000);
+
+      mediaRecorder.ondataavailable = function (e) {
+        parts.push(e.data);
+      };
+    });
+
+  };
+
+  const Stoprecording = () => {
+    setRecord(0);
+    mediaRecorder.stop();
+    const blob = new Blob(parts,{
+      type : "video/webm"      
+    });
+    const url= URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.style = "display: none";
+    a.href= url;
+    a.download = "test.webm";
+    a.click();
+  }
+
   const Disconnect = () => {
     socketRef.current.emit('disconnect');
     window.location.reload();
@@ -465,6 +498,28 @@ const Room = (props) => {
                 Stop Sharin
               </Button>
             )}
+
+            {record === 1 ? (
+              <Button className={classes.button} 
+              variant="contained" 
+              color="#f44336[900]" 
+              startIcon={<StopIcon fontSize="large" />} 
+              onClick={() => Stoprecording()}
+              >
+                Stop recording
+              </Button>
+            ) : (
+            <Button className={classes.button} 
+            variant="contained" 
+            color="#f44336[900]" 
+            startIcon={<AlbumIcon fontSize="large" />} 
+            onClick={() => Startrecording()}
+            >
+              Start recording
+            </Button>
+            )}
+
+            
             <Button className={classes.button} 
             variant="contained" 
             color="#f44336[900]" 
