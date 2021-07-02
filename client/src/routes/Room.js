@@ -167,12 +167,13 @@ const Room = (props) => {
               peername,
             });
             const peerObj = {
-              peer,
               peerID: payload.callerID,
+              peer,
               peername,
             };
-
-            setPeers((users) => [...users, peerObj]);
+            var peers1 = peers;
+            peers1.push(peerObj);
+            setPeers(peers1);
           });
 
           socketRef.current.on("receiving returned signal", (payload) => {
@@ -400,7 +401,7 @@ const Room = (props) => {
             <div className={classes.VideoName}>{globalName}</div>
           </div>
           {console.log(peers)}
-          {peersRef.current.map((peer, index) => {
+          {peers.map((peer, index) => {
             //bug might arise from peersRef, s/peersRef/peers/g
             return (
               <div className={classes.VideoBox}>

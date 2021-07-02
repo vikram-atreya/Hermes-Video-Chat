@@ -23,7 +23,6 @@ const ParticipantList = (props) => {
     <div className={classes.item}>
       <div>No of participants = {props.usernames.length + 1}</div>
       <div>1) Me</div>
-      {console.log(props.usernames)}
       {props.usernames.map((user, index) => {
         return (
           <div>
