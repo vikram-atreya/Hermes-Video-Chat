@@ -11,6 +11,7 @@ import {
   Typography,
   TextField,
   Drawer,
+  Grid,
 } from "@material-ui/core";
 import ScreenShareIcon from "@material-ui/icons/ScreenShare";
 import CancelPresentationIcon from "@material-ui/icons/CancelPresentation";
@@ -40,7 +41,8 @@ const useStyles = makeStyles((theme) => ({
     alignSelf: "center",
   },
   stickToBottom: {
-    width: "76vw",
+    width: "100vw",
+    height: "5vh",
     position: "fixed",
     bottom: 0,
     left: 0,
@@ -54,30 +56,50 @@ const useStyles = makeStyles((theme) => ({
   },
   VideoBox: {
     float: "top",
-    height: "32%",
-    width: "40%",
     margin: "20px 20px 0px 20px",
     flexWrap: "wrap",
+    height: "100%",
+    width: "100%",
+  },
+  GridElement: {
+    height: "100%",
   },
   VideoName: {
     textAlign: "center",
     backgroundColor: "grey",
   },
+  oneVideo: {
+    width: "80%",
+    height: "100%",
+    justifyContent: "space-evenly",
+  },
+  twoVideo: {
+    width: "45%",
+    height: "100%",
+  },
+  threeVideo: {
+    width: "45%",
+    height: "45%",
+  },
 }));
 
 const Container = styled.div`
-  padding: 20px;
+  padding: auto;
+  padding-top: 0px;
   display: flex;
   height: 88vh;
-  width: 70vw;
-  margin: 20 px;
+  width: 96vw;
+  margin: auto;
   flex-wrap: wrap;
-  overflow: hidden;
+  justify-content: space-evenly;
 `;
 
 const StyledVideo = styled.video`
-  height: 100%;
+  height: 80%;
   width: 100%;
+  margin: auto;
+  object-fit: cover;
+  justifyContent: "space-evenly",
 `;
 
 const Video = (props) => {
@@ -93,8 +115,8 @@ const Video = (props) => {
 };
 
 const videoConstraints = {
-  height: window.innerHeight / 2,
-  width: window.innerWidth / 2,
+  height: window.innerHeight,
+  width: window.innerWidth,
 };
 
 const Room = (props) => {
@@ -120,6 +142,7 @@ const Room = (props) => {
   const { peopleDrawerOpen, setPeopleDraweropen } = useContext(NameContext);
 
   const classes = useStyles();
+  const cls = (...classes) => classes.filter(Boolean).join(" ");
 
   useEffect(() => {
     if (globalName === "") {
@@ -171,9 +194,7 @@ const Room = (props) => {
               peer,
               peername,
             };
-            var peers1 = peers;
-            peers1.push(peerObj);
-            setPeers(peers1);
+            setPeers((users) => [...users, peerObj]);
           });
 
           socketRef.current.on("receiving returned signal", (payload) => {
@@ -355,12 +376,11 @@ const Room = (props) => {
           gridTemplateColumns: "100fr 1fr",
           right: "0px",
           margin: "0px",
-          maxHeight: { h },
-          maxWidth: "100%",
-          overflow: "hidden",
+          height: "86vh",
+          width: "100vw",
         }}
       >
-        <Container>
+        {nameModalopen && (
           <div>
             <Dialog
               open={nameModalopen}
@@ -388,30 +408,40 @@ const Room = (props) => {
               </DialogActions>
             </Dialog>
           </div>
-          <div className={classes.VideoBox}>
-            <div>
-              <StyledVideo
-                controls
-                muted
-                ref={userVideo}
-                autoPlay
-                playsInline
-              />
-            </div>
+        )}
+        <Container>
+          <div
+            className={cls(
+              classes.VideoBox,
+              peers.length === 0 && classes.oneVideo,
+              peers.length === 1 && classes.twoVideo,
+              peers.length >= 2 && classes.threeVideo
+            )}
+          >
+            <StyledVideo controls muted ref={userVideo} autoPlay playsInline />
             <div className={classes.VideoName}>{globalName}</div>
           </div>
-          {console.log(peers)}
           {peers.map((peer, index) => {
             //bug might arise from peersRef, s/peersRef/peers/g
             return (
-              <div className={classes.VideoBox}>
-                <div>
-                  <Video key={peer.peerID} peer={peer.peer} name={globalName} />
-                </div>
+              <div
+                className={cls(
+                  classes.VideoBox,
+                  peers.length === 0 && classes.oneVideo,
+                  peers.length === 1 && classes.twoVideo,
+                  peers.length >= 2 && classes.threeVideo
+                )}
+              >
+                <Video key={peer.peerID} peer={peer.peer} name={globalName} />
                 <div className={classes.VideoName}>{peers[index].peername}</div>
               </div>
             );
           })}
+          <div
+            style={{
+              height: "3vh",
+            }}
+          />
           <Typography className={classes.stickToBottom}>
             {video === 0 ? (
               <Button

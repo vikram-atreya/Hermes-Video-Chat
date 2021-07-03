@@ -13,6 +13,7 @@ import { NameContext } from "../Context";
 const useStyles = makeStyles((theme) => ({
   appBar: {
     width: "100%",
+    height: "8vh",
     transition: theme.transitions.create(["margin", "width"], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
@@ -28,6 +29,7 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     flexGrow: 1,
+    fontSize: "1em",
   },
   hide: {
     display: "none",
@@ -60,7 +62,6 @@ const RoomAppbar = () => {
         [classes.appBarShift]: chatDrawerOpen,
       })}
       position='static'
-      height='5vh'
     >
       <Toolbar>
         <Typography className={classes.title}>Video Chat App</Typography>
