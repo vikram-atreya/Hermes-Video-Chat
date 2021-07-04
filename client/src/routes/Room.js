@@ -87,9 +87,9 @@ const Container = styled.div`
   padding: auto;
   padding-top: 0px;
   display: flex;
-  height: 88vh;
-  width: 96vw;
-  margin: auto;
+  height: 86vh;
+  width: 70vw;
+  margin: 20 px;
   flex-wrap: wrap;
   justify-content: space-evenly;
 `;
@@ -533,15 +533,19 @@ const Room = (props) => {
           </Typography>
         </Container>
         <Drawer open={chatDrawerOpen} variant='persistent' anchor='right'>
-          <IconButton onClick={handleChatDrawerClose}>
-            <ChevronRightIcon />
-          </IconButton>
+          <div style={{display: 'flex',alignItems: 'left',flexWrap: 'wrap',}}>
+            <IconButton onClick={handleChatDrawerClose}>
+              <ChevronRightIcon/>
+            </IconButton>
+          </div>
           <ChatBox />
         </Drawer>
         <Drawer open={peopleDrawerOpen} variant='persistent' anchor='right'>
-          <IconButton onClick={handlePeopleDrawerClose}>
-            <ChevronRightIcon />
-          </IconButton>
+          <div style={{display: 'flex',alignItems: 'left',flexWrap: 'wrap',}}>
+            <IconButton onClick={handlePeopleDrawerClose}>
+              <ChevronRightIcon />
+            </IconButton>
+          </div>
           <ParticipantList usernames={peersRef.current} />
         </Drawer>
       </div>

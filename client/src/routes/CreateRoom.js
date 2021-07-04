@@ -54,7 +54,7 @@ const CreateRoom = (props) => {
             label='Name'
           />
         </div>
-        <button>Create room</button>
+        <button style = {{backgroundColor: "#4169E1"}}>Create room</button>
       </form>
     </>
   );

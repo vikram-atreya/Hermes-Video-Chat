@@ -58,20 +58,23 @@ function ChatBox() {
       </div>
       <div>
         <form onSubmit={onMessageSubmit}>
-          <h2>Send Message</h2>
-          <div>
-            <TextField
-              name='message'
-              className='text-field'
-              onChange={(e) => onTextChange(e)}
-              value={state.message}
-              label='Message'
-            />
-          </div>
-          <br />
-          <button type='button' onClick={onMessageSubmit}>
-            Send Message
-          </button>
+          <span>
+            <div>
+              <TextField
+                  name='message'
+                  className='text-field'
+                  onChange={(e) => onTextChange(e)}
+                  value={state.message}
+                  label='Message'
+                />
+            </div>
+            <div>
+              <button type='button' boxShadow= '0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19)' onClick={onMessageSubmit}>
+                Send
+              </button>
+            </div>
+          </span>
+            
         </form>
       </div>
     </div>
