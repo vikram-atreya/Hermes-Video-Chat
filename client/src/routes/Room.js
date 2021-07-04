@@ -87,9 +87,9 @@ const Container = styled.div`
   padding: auto;
   padding-top: 0px;
   display: flex;
-  height: 86vh;
-  width: 70vw;
-  margin: 20 px;
+  height: 88vh;
+  width: 96vw;
+  margin: auto;
   flex-wrap: wrap;
   justify-content: space-evenly;
 `;
