@@ -28,6 +28,15 @@ const CreateRoom = (props) => {
     props.history.push(`/room/${id}`);
   }
 
+  function createChat() {
+    console.log({ globalName });
+    const id = uuid();
+    setglobalName(state["name"]);
+    props.history.push(`/ChatBox/${id}`);
+  }
+
+
+
   const onTextChange = (e) => {
     setState({ ...state, [e.target.name]: e.target.value });
     console.log(state["name"]);
@@ -43,19 +52,35 @@ const CreateRoom = (props) => {
           <h1>Welcome to my Video Chat App.</h1>
         </div>
       </div>
-
-      <form onSubmit={create} className={classes.Container}>
-        <h2>Enter your display name</h2>
-        <div>
-          <TextField
-            name='name'
-            value={state.name}
-            onChange={(e) => onTextChange(e)}
-            label='Name'
-          />
-        </div>
-        <button style = {{backgroundColor: "#4169E1"}}>Create room</button>
-      </form>
+      <div>
+        <form onSubmit={create} className={classes.Container}>
+          <h2>Enter your display name</h2>
+          <div>
+            <TextField
+              name='name'
+              value={state.name}
+              onChange={(e) => onTextChange(e)}
+              label='Name'
+            />
+          </div>
+          <button style = {{backgroundColor: "#4169E1"}}>Create room</button>
+        </form>
+      </div>
+      <br></br>
+      <div>
+        <form onSubmit={createChat} className={classes.Container}>
+          <h2>Enter your display name</h2>
+          <div>
+            <TextField
+              name='name'
+              value={state.name}
+              onChange={(e) => onTextChange(e)}
+              label='Name'
+            />
+          </div>
+          <button style = {{backgroundColor: "#4169E1"}}>Create chat room</button>
+        </form>
+      </div>
     </>
   );
 };
