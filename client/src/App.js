@@ -1,8 +1,6 @@
 import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-import AppBar from "@material-ui/core/AppBar";
 import CreateRoom from "./routes/CreateRoom";
-import ChatBox from "./components/ChatBox";
 import OnlyChat from "./routes/OnlyChat";
 import Room from "./routes/Room";
 import "./App.css";

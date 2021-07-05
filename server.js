@@ -57,27 +57,25 @@ io.on("connection", (socket) => {
         if (user.id !== socket.id) {
           return user;
         }
-      }); //TO-DO: add ref for usernames as well
+      });
       users[roomID] = room;
     }
     socket.broadcast.emit("user left", socket.id);
   });
 
   socket.on("newChat", (roomID) => {
-    if (chatData[room]) {
-      chatData[room] = [];
-    } else {
-      chatData[roomID].map(({ name, message }, index) =>
-        socket.emit("message", { name, message })
-      );
+    console.log("newChat recevied");
+    console.log(chatData[roomID]);
+    if (chatData[roomID]) {
+      socket.emit("check", chatData[roomID]);
     }
   });
 
-  socket.on("message", ({ name, message }) => {
-    if (chatData[room]) {
-      chatData[room].push({ name, message });
+  socket.on("message", ({ name, message, roomID }) => {
+    if (chatData[roomID]) {
+      chatData[roomID].push({ name, message });
     } else {
-      chatData[room] = [{ name, message }];
+      chatData[roomID] = [{ name, message }];
     }
     io.emit("message", { name, message });
   });

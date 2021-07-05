@@ -25,7 +25,6 @@ import AlbumIcon from "@material-ui/icons/Album";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import IconButton from "@material-ui/core/IconButton";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
@@ -121,12 +120,10 @@ const videoConstraints = {
 
 const Room = (props) => {
   const [peers, setPeers] = useState([]);
-  //const [peernames, setPeernames] = useState([]);
   const [video, setVideo] = useState(1);
   const [audio, setAudio] = useState(1);
   const [record, setRecord] = useState(0);
   const [myVideo, setmyVideo] = useState();
-  const [callEnded, setCallEnded] = useState();
   const [tempName, settempName] = useState({ name: "" });
   const [nameModalopen, setnameModalOpen] = useState(false);
 
@@ -134,7 +131,6 @@ const Room = (props) => {
   const socketRef = useRef();
   const userVideo = useRef();
   const peersRef = useRef([]);
-  //const peernamesRef = useRef([]);
 
   const roomID = props.match.params.roomID;
   const { globalName, setglobalName } = useContext(NameContext);

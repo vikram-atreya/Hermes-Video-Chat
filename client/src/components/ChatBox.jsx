@@ -6,20 +6,32 @@ import "../css/ChatBox.css";
 import { NameContext } from "../Context";
 
 function ChatBox(props) {
-  //const { name } = useContext(NameContext);
   const [state, setState] = useState({ message: "", name: "User" });
   const [chat, setChat] = useState([]);
+  const [newChat, setnewChat] = useState(1);
 
   const roomID = props.roomID;
   const { globalName } = useContext(NameContext);
 
   const socketRef = useRef();
+  const chatRef = useRef([]);
 
   useEffect(() => {
     socketRef.current = io.connect("http://localhost:8000");
-    socketRef.current.emit("newChat", roomID);
+    if (newChat) {
+      socketRef.current.emit("newChat", roomID);
+      socketRef.current.on("check", (prevData) => {
+        prevData.forEach((element) => {
+          var name = element.name;
+          var message = element.message;
+          chatRef.current.push({ name, message });
+        });
+        setChat(chatRef.current);
+      });
+      setnewChat(0);
+    }
     socketRef.current.on("message", ({ name, message }) => {
-      console.log({ name, message });
+      chatRef.current.push({ name, message });
       setChat([...chat, { name, message }]);
     });
     return () => socketRef.current.disconnect();
@@ -30,19 +42,16 @@ function ChatBox(props) {
   };
 
   const onMessageSubmit = (e) => {
-    // eslint-disable-next-line
-    console.log("Message submit button working");
     var { name, message } = state;
     if (global !== "") name = globalName;
     else name = "User";
-    console.log({ name, message });
-    socketRef.current.emit("message", { name, message });
+    socketRef.current.emit("message", { name, message, roomID });
     e.preventDefault();
     setState({ message: "", name });
   };
 
   const renderChat = () =>
-    chat.map(({ name, message }, index) => (
+    chatRef.current.map(({ name, message }, index) => (
       <div key={index}>
         <h3>
           {name}: <span>{message}</span>
