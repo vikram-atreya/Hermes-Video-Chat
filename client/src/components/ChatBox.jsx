@@ -5,17 +5,19 @@ import io from "socket.io-client";
 import "../css/ChatBox.css";
 import { NameContext } from "../Context";
 
-function ChatBox() {
+function ChatBox(props) {
   //const { name } = useContext(NameContext);
   const [state, setState] = useState({ message: "", name: "User" });
   const [chat, setChat] = useState([]);
 
+  const roomID = props.roomID;
   const { globalName } = useContext(NameContext);
 
   const socketRef = useRef();
 
   useEffect(() => {
     socketRef.current = io.connect("http://localhost:8000");
+    socketRef.current.emit("newChat", roomID);
     socketRef.current.on("message", ({ name, message }) => {
       console.log({ name, message });
       setChat([...chat, { name, message }]);
@@ -61,20 +63,23 @@ function ChatBox() {
           <span>
             <div>
               <TextField
-                  name='message'
-                  className='text-field'
-                  onChange={(e) => onTextChange(e)}
-                  value={state.message}
-                  label='Message'
-                />
+                name='message'
+                className='text-field'
+                onChange={(e) => onTextChange(e)}
+                value={state.message}
+                label='Message'
+              />
             </div>
             <div>
-              <button type='button' boxShadow= '0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19)' onClick={onMessageSubmit}>
+              <button
+                type='button'
+                boxShadow='0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19)'
+                onClick={onMessageSubmit}
+              >
                 Send
               </button>
             </div>
           </span>
-            
         </form>
       </div>
     </div>

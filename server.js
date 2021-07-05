@@ -9,6 +9,7 @@ const io = socket(server);
 const users = {};
 
 const socketToRoom = {};
+const chatData = {};
 
 io.on("connection", (socket) => {
   socket.on("join room", ({ roomID, globalName }) => {
@@ -62,7 +63,22 @@ io.on("connection", (socket) => {
     socket.broadcast.emit("user left", socket.id);
   });
 
+  socket.on("newChat", (roomID) => {
+    if (chatData[room]) {
+      chatData[room] = [];
+    } else {
+      chatData[roomID].map(({ name, message }, index) =>
+        socket.emit("message", { name, message })
+      );
+    }
+  });
+
   socket.on("message", ({ name, message }) => {
+    if (chatData[room]) {
+      chatData[room].push({ name, message });
+    } else {
+      chatData[room] = [{ name, message }];
+    }
     io.emit("message", { name, message });
   });
 });

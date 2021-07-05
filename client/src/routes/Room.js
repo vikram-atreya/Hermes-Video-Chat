@@ -99,7 +99,7 @@ const StyledVideo = styled.video`
   width: 100%;
   margin: auto;
   object-fit: cover;
-  justifyContent: "space-evenly",
+  justifycontent: "space-evenly";
 `;
 
 const Video = (props) => {
@@ -533,15 +533,19 @@ const Room = (props) => {
           </Typography>
         </Container>
         <Drawer open={chatDrawerOpen} variant='persistent' anchor='right'>
-          <div style={{display: 'flex',alignItems: 'left',flexWrap: 'wrap',}}>
+          <div
+            style={{ display: "flex", alignItems: "left", flexWrap: "wrap" }}
+          >
             <IconButton onClick={handleChatDrawerClose}>
-              <ChevronRightIcon/>
+              <ChevronRightIcon />
             </IconButton>
           </div>
-          <ChatBox />
+          <ChatBox roomID={roomID} />
         </Drawer>
         <Drawer open={peopleDrawerOpen} variant='persistent' anchor='right'>
-          <div style={{display: 'flex',alignItems: 'left',flexWrap: 'wrap',}}>
+          <div
+            style={{ display: "flex", alignItems: "left", flexWrap: "wrap" }}
+          >
             <IconButton onClick={handlePeopleDrawerClose}>
               <ChevronRightIcon />
             </IconButton>
