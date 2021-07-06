@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState, useContext } from "react";
 
 import { TextField, Button } from "@material-ui/core";
-import SendIcon from '@material-ui/icons/Send';
+import SendIcon from "@material-ui/icons/Send";
 import "../css/ChatBox.css";
 
 import io from "socket.io-client";
@@ -72,21 +72,29 @@ function ChatBox(props) {
       <div>
         <form onSubmit={onMessageSubmit}>
           <span>
-              <TextField
-                name='message'
-                className='text-field'
-                onChange={(e) => onTextChange(e)}
-                style = {{width: "65%"}}
-                value={state.message}
-                label='Message'
-              />
-              <button
-                class="raise"
-                style = {{width: "20%", margin: "20px", height: "30px", padding: "0px", margin: "0px", marginTop: "20px", border: "10px"}}
-                onClick={onMessageSubmit}
-              >
-                <SendIcon style = {{marginTop: "0px", width: "50%"}}/>
-              </button>
+            <TextField
+              name='message'
+              className='text-field'
+              onChange={(e) => onTextChange(e)}
+              style={{ width: "65%" }}
+              value={state.message}
+              label='Message'
+            />
+            <button
+              class='raise'
+              style={{
+                width: "20%",
+                margin: "20px",
+                height: "30px",
+                padding: "0px",
+                margin: "0px",
+                marginTop: "20px",
+                border: "10px",
+              }}
+              onClick={onMessageSubmit}
+            >
+              <SendIcon style={{ marginTop: "0px", width: "50%" }} />
+            </button>
           </span>
         </form>
       </div>

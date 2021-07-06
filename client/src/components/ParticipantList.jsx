@@ -6,9 +6,9 @@ const useStyles = makeStyles(() => ({
     width: "25vw",
   },
   styl: {
-    fontStyle : 'italic', 
-    fontWidth : '5px' ,
-  }
+    fontStyle: "italic",
+    fontWidth: "5px",
+  },
 }));
 
 const ParticipantList = (props) => {
@@ -16,17 +16,18 @@ const ParticipantList = (props) => {
 
   return (
     <div className={classes.item}>
-      <div>No of participants({props.usernames.length + 1})</div><br></br>
+      <div>No of participants({props.usernames.length + 1})</div>
+      <br></br>
       Participant list:
       <div className={classes.styl}>
         <div>1) You </div>
         {props.usernames.map((user, index) => {
-        return (
-          <div>
-            {index + 2}) {user.peername}
-          </div>
-        );
-      })}
+          return (
+            <div>
+              {index + 2}) {user.peername}
+            </div>
+          );
+        })}
       </div>
     </div>
   );

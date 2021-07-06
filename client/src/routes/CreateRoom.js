@@ -2,7 +2,6 @@ import React, { useState, useContext } from "react";
 import { TextField, makeStyles, AppBar } from "@material-ui/core";
 import { v1 as uuid } from "uuid";
 import { NameContext } from "../Context.js";
-import ParticlesBg from "../components/Particles"
 import "../css/CreateRoom.css";
 
 const useStyles = makeStyles(() => ({
@@ -36,8 +35,6 @@ const CreateRoom = (props) => {
     props.history.push(`/ChatBox/${id}`);
   }
 
-
-
   const onTextChange = (e) => {
     setState({ ...state, [e.target.name]: e.target.value });
     console.log(state["name"]);
@@ -45,7 +42,6 @@ const CreateRoom = (props) => {
 
   return (
     <div>
-
       <AppBar className='App-bar' position='static' height='10vh'>
         Video Chat App
       </AppBar>
@@ -65,7 +61,7 @@ const CreateRoom = (props) => {
               label='Name'
             />
           </div>
-          <button style = {{backgroundColor: "#4169E1"}}>Create room</button>
+          <button style={{ backgroundColor: "#4169E1" }}>Create room</button>
         </form>
       </div>
       <br></br>
@@ -80,7 +76,9 @@ const CreateRoom = (props) => {
               label='Name'
             />
           </div>
-          <button style = {{backgroundColor: "#4169E1"}}>Create chat room</button>
+          <button style={{ backgroundColor: "#4169E1" }}>
+            Create chat room
+          </button>
         </form>
       </div>
     </div>

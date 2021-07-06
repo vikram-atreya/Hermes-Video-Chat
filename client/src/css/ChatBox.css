@@ -1,88 +1,84 @@
 .card {
-    margin: 30px;
-    margin-right: 10px;
-    margin-top: 0px;
-    width: 25vw;
-    color: rgb(0, 0, 0);
-    height: 40vh;
-  }
+  margin: 30px;
+  margin-right: 10px;
+  margin-top: 0px;
+  width: 25vw;
+  color: rgb(0, 0, 0);
+  height: 40vh;
+}
 
-  form {
-    width: 88%;
-    height: 15vh;
-    font-size: small;
-    border-radius: 5px;
-    padding: 20px;
-    box-shadow: 0px 3px 24px -8px rgba(0, 0, 0, 0.75);
-    clear: both;
-  }
-  
-  .name-field {
-    margin-bottom: 10px;
-  }
+form {
+  width: 88%;
+  height: 15vh;
+  font-size: small;
+  border-radius: 5px;
+  padding: 20px;
+  box-shadow: 0px 3px 24px -8px rgba(0, 0, 0, 0.75);
+  clear: both;
+}
 
-  .form-input {
-    height: 30vh;
-  }
+.name-field {
+  margin-bottom: 10px;
+}
 
-  button {
-    margin-top: 20px;
-    padding: 10px;
-    background: transparent;
-    border-radius: 5px;
-    float: left;
-  }
+.form-input {
+  height: 30vh;
+}
 
-  .button2{
-    margin-top: 20px;
-    padding: 10px;
-    background: transparent;
-    border-radius: 5px;
-    float: left;
-  }
-  
-  .render-chat {
-    display: flex;
-    width: 88%;
-    height: 65vh;
-    border-radius: 5px;
-    padding: 20px;
-    margin-right: 10px;
-    box-shadow: 0px 3px 24px -8px rgba(0, 0, 0, 0.75);
-    word-wrap: break-word;
-    clear: right;
-    overflow-y: scroll;
-    overflow-x: auto;
-  }
-  
-  .text-field{
-    height: 5px;
-    padding: 0px;
-    float: left;
-    margin: 10px;
-  }
+button {
+  margin-top: 20px;
+  padding: 10px;
+  background: transparent;
+  border-radius: 5px;
+  float: left;
+}
 
-  h3 {
-    color: #2f72da;
-  }
-  
-  span {
-    color: black;
-  }
+.button2 {
+  margin-top: 20px;
+  padding: 10px;
+  background: transparent;
+  border-radius: 5px;
+  float: left;
+}
 
-  .offset:hover {  
-    box-shadow: 
-      0.3em 0.3em 0 0 var(--color),
-      inset 0.3em 0.3em 0 0 var(--color);
-  }
-  .offset:focus {
-      box-shadow: 
-        0 0 0 0 var(--hover),
-        inset 6em 3.5em 0 0 var(--hover);
-    }
+.render-chat {
+  display: flex;
+  width: 88%;
+  height: 65vh;
+  border-radius: 5px;
+  padding: 20px;
+  margin-right: 10px;
+  box-shadow: 0px 3px 24px -8px rgba(0, 0, 0, 0.75);
+  word-wrap: break-word;
+  clear: right;
+  overflow-y: scroll;
+  overflow-x: auto;
+}
 
-    .raise:hover,
-    .raise:focus {
-      box-shadow: 0 0.5em 0.5em -0.4em var(--hover);
-      transform: translateX(0.5em);
-    }
+.text-field {
+  height: 5px;
+  padding: 0px;
+  float: left;
+  margin: 10px;
+}
+
+h3 {
+  color: #2f72da;
+}
+
+span {
+  color: black;
+}
+
+.offset:hover {
+  box-shadow: 0.3em 0.3em 0 0 var(--color), inset 0.3em 0.3em 0 0 var(--color);
+}
+.offset:focus {
+  box-shadow: 0 0 0 0 var(--hover), inset 6em 3.5em 0 0 var(--hover);
+}
+
+.raise:hover,
+.raise:focus {
+  box-shadow: 0 0.5em 0.5em -0.4em var(--hover);
+  transform: translateX(0.5em);
+}
