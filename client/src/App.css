@@ -42,3 +42,8 @@
     transform: rotate(360deg);
   }
 }
+
+#browser-router {
+  position: relative;
+  z-index: 1;
+}
