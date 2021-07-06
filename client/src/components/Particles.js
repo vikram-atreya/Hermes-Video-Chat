@@ -1,7 +1,6 @@
 import React from "react";
 import Particles from "react-particles-js";
 import "../css/Particles.css";
-import ChatBox from "./ChatBox";
 
 function ParticlesBg() {
   return (

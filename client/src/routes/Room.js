@@ -11,13 +11,8 @@ import {
   Typography,
   TextField,
   Drawer,
-  Grid,
 } from "@material-ui/core";
-import {
-  createMuiTheme,
-  withStyles,
-  ThemeProvider,
-} from "@material-ui/core/styles";
+import { withStyles } from "@material-ui/core/styles";
 import ScreenShareIcon from "@material-ui/icons/ScreenShare";
 import CancelPresentationIcon from "@material-ui/icons/CancelPresentation";
 import MicOffIcon from "@material-ui/icons/MicOff";
@@ -33,7 +28,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import IconButton from "@material-ui/core/IconButton";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
-import { green, purple, red } from "@material-ui/core/colors";
+import { green, red } from "@material-ui/core/colors";
 
 import io from "socket.io-client";
 import Peer from "simple-peer";
@@ -369,7 +364,7 @@ const Room = (props) => {
 
   const RedButton = withStyles((theme) => ({
     root: {
-      color: theme.palette.getContrastText(purple[500]),
+      color: theme.palette.getContrastText(red[700]),
       backgroundColor: red[700],
       "&:hover": {
         backgroundColor: red[900],
@@ -379,7 +374,7 @@ const Room = (props) => {
 
   const GreenButton = withStyles((theme) => ({
     root: {
-      color: theme.palette.getContrastText(purple[500]),
+      color: theme.palette.getContrastText(green[700]),
       backgroundColor: green[700],
       "&:hover": {
         backgroundColor: green[900],
