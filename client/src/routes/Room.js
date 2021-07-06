@@ -13,6 +13,7 @@ import {
   Drawer,
   Grid,
 } from "@material-ui/core";
+import { createMuiTheme, withStyles, ThemeProvider } from '@material-ui/core/styles';
 import ScreenShareIcon from "@material-ui/icons/ScreenShare";
 import CancelPresentationIcon from "@material-ui/icons/CancelPresentation";
 import MicOffIcon from "@material-ui/icons/MicOff";
@@ -28,6 +29,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import IconButton from "@material-ui/core/IconButton";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
+import { green, purple, red } from '@material-ui/core/colors';
 
 import io from "socket.io-client";
 import Peer from "simple-peer";
@@ -361,6 +363,26 @@ const Room = (props) => {
     settempName({ ...tempName, [e.target.name]: e.target.value });
   };
 
+  const RedButton = withStyles((theme) => ({
+    root: {
+      color: theme.palette.getContrastText(purple[500]),
+      backgroundColor: red[700],
+      '&:hover': {
+        backgroundColor: red[900],
+      },
+    },
+  }))(Button);
+
+  const GreenButton = withStyles((theme) => ({
+    root: {
+      color: theme.palette.getContrastText(purple[500]),
+      backgroundColor: green[700],
+      '&:hover': {
+        backgroundColor: green[900],
+      },
+    },
+  }))(Button);
+
   var h = window.innerHeight;
 
   return (
@@ -440,36 +462,34 @@ const Room = (props) => {
           />
           <Typography className={classes.stickToBottom}>
             {video === 0 ? (
-              <Button
+              <RedButton
                 className={classes.button}
                 variant='contained'
-                color='danger'
-                startIcon={<VideocamIcon fontSize='large' />}
+                startIcon={<VideocamOffIcon fontSize='large' />}
                 onClick={() => startVideo()}
               />
             ) : (
-              <Button
+              <GreenButton
                 className={classes.button}
                 variant='contained'
-                color='primary'
-                startIcon={<VideocamOffIcon fontSize='large' />}
+                startIcon={<VideocamIcon fontSize='large' />}
                 onClick={() => stopVideo()}
               />
             )}
             {audio === 0 ? (
-              <Button
+              <RedButton
                 className={classes.button}
                 variant='contained'
                 color='danger'
-                startIcon={<MicIcon fontSize='large' />}
+                startIcon={<MicOffIcon fontSize='large' />}
                 onClick={() => startAudio()}
               />
             ) : (
-              <Button
+              <GreenButton
                 className={classes.button}
                 variant='contained'
                 color='primary'
-                startIcon={<MicOffIcon fontSize='large' />}
+                startIcon={<MicIcon fontSize='large' />}
                 onClick={() => stopAudio()}
               />
             )}
@@ -484,7 +504,7 @@ const Room = (props) => {
                 Share screen
               </Button>
             ) : (
-              <Button
+              <RedButton
                 className={classes.button}
                 variant='contained'
                 color='primary'
@@ -492,7 +512,7 @@ const Room = (props) => {
                 onClick={() => stopshareScreen()}
               >
                 Stop Sharin
-              </Button>
+              </RedButton>
             )}
 
             {record === 1 ? (
@@ -509,7 +529,7 @@ const Room = (props) => {
               <Button
                 className={classes.button}
                 variant='contained'
-                color='#f44336[900]'
+                color='primary'
                 startIcon={<AlbumIcon fontSize='large' />}
                 onClick={() => Startrecording()}
               >
@@ -517,15 +537,14 @@ const Room = (props) => {
               </Button>
             )}
 
-            <Button
+            <RedButton
               className={classes.button}
               variant='contained'
-              color='#f44336[900]'
               startIcon={<CallEndIcon fontSize='large' />}
               onClick={() => Disconnect()}
             >
               Disconnect
-            </Button>
+            </RedButton>
           </Typography>
         </Container>
         <Drawer open={chatDrawerOpen} variant='persistent' anchor='right'>

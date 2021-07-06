@@ -32,6 +32,14 @@
     border-radius: 5px;
     float: left;
   }
+
+  .button2{
+    margin-top: 20px;
+    padding: 10px;
+    background: transparent;
+    border-radius: 5px;
+    float: left;
+  }
   
   .render-chat {
     display: flex;
@@ -61,3 +69,20 @@
   span {
     color: black;
   }
+
+  .offset:hover {  
+    box-shadow: 
+      0.3em 0.3em 0 0 var(--color),
+      inset 0.3em 0.3em 0 0 var(--color);
+  }
+  .offset:focus {
+      box-shadow: 
+        0 0 0 0 var(--hover),
+        inset 6em 3.5em 0 0 var(--hover);
+    }
+
+    .raise:hover,
+    .raise:focus {
+      box-shadow: 0 0.5em 0.5em -0.4em var(--hover);
+      transform: translateX(0.5em);
+    }

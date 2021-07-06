@@ -1,8 +1,10 @@
-import { TextField } from "@material-ui/core";
 import React, { useEffect, useRef, useState, useContext } from "react";
 
-import io from "socket.io-client";
+import { TextField, Button } from "@material-ui/core";
+import SendIcon from '@material-ui/icons/Send';
 import "../css/ChatBox.css";
+
+import io from "socket.io-client";
 import { NameContext } from "../Context";
 
 function ChatBox(props) {
@@ -70,24 +72,21 @@ function ChatBox(props) {
       <div>
         <form onSubmit={onMessageSubmit}>
           <span>
-            <div>
               <TextField
                 name='message'
                 className='text-field'
                 onChange={(e) => onTextChange(e)}
+                style = {{width: "65%"}}
                 value={state.message}
                 label='Message'
               />
-            </div>
-            <div>
               <button
-                type='button'
-                boxShadow='0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19)'
+                class="raise"
+                style = {{width: "20%", margin: "20px", height: "30px", padding: "0px", margin: "0px", marginTop: "20px", border: "10px"}}
                 onClick={onMessageSubmit}
               >
-                Send
+                <SendIcon style = {{marginTop: "0px", width: "50%"}}/>
               </button>
-            </div>
           </span>
         </form>
       </div>
