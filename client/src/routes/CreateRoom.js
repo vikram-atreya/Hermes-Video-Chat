@@ -5,6 +5,17 @@ import { NameContext } from "../Context.js";
 import "../css/CreateRoom.css";
 
 const useStyles = makeStyles(() => ({
+  appBar: {
+    width: "100%",
+    height: "8vh",
+    backgroundColor: "#e3e3e3",
+    color: "#1b024a",
+    fontWeight: "10000",
+    fontSize: "xx-large",
+    fontWeight: "bold",
+    paddingTop: "1vh",
+    paddingLeft: "2vh",
+  },
   Container: {
     height: "25vh",
     display: "wrap",
@@ -13,6 +24,7 @@ const useStyles = makeStyles(() => ({
     marginLeft: "10vh",
     alignItems: "center",
     background: "#ffffff",
+    backgroundColor: "#e3e3e3",
   },
 }));
 
@@ -43,7 +55,7 @@ const CreateRoom = (props) => {
 
   return (
     <div>
-      <AppBar className='App-bar' position='static' height='10vh'>
+      <AppBar className={classes.appBar} position='static' height='10vh'>
         Video Chat App
       </AppBar>
       <div class='outer-typewriter'>

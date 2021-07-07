@@ -38,7 +38,9 @@ import styled from "styled-components";
 const useStyles = makeStyles((theme) => ({
   button: {
     marginLeft: "10px",
+    marginRight: "10px",
     alignSelf: "center",
+    color: "#ffffff",
   },
   stickToBottom: {
     width: "100vw",
@@ -46,13 +48,12 @@ const useStyles = makeStyles((theme) => ({
     position: "fixed",
     bottom: 0,
     left: 0,
-    backgroundColor: "lightBlue",
-    marginLeft: "0px",
+    backgroundColor: "#f9dfdc",
     alignItems: "center",
     alignSelf: "center",
     paddingTop: "1em",
     paddingBottom: "1em",
-    paddingLeft: "auto",
+    paddingLeft: "25vw",
   },
   VideoBox: {
     float: "top",
@@ -532,7 +533,7 @@ const Room = (props) => {
                 startIcon={<AlbumIcon fontSize='large' />}
                 onClick={() => Startrecording()}
               >
-                Start recording
+                Record
               </Button>
             )}
 

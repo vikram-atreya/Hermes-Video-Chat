@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
   appBar: {
     width: "100%",
     height: "8vh",
-    backgroundColor: "#80bdff",
+    backgroundColor: "#f9dfdc",
     color: "#1b024a",
     fontSize: "x-large",
     fontWeight: "10000",
