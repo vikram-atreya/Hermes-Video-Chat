@@ -64,8 +64,6 @@ io.on("connection", (socket) => {
   });
 
   socket.on("newChat", (roomID) => {
-    console.log("newChat recevied");
-    console.log(chatData[roomID]);
     if (chatData[roomID]) {
       socket.emit("check", chatData[roomID]);
     }

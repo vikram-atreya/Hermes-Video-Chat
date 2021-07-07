@@ -14,6 +14,10 @@ const useStyles = makeStyles((theme) => ({
   appBar: {
     width: "100%",
     height: "8vh",
+    backgroundColor: "#80bdff",
+    color: "#1b024a",
+    fontSize: "x-large",
+    fontWeight: "10000",
     transition: theme.transitions.create(["margin", "width"], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
@@ -21,6 +25,9 @@ const useStyles = makeStyles((theme) => ({
   },
   appBarShift: {
     width: "77%",
+    color: "#1b024a",
+    fontSize: "x-large",
+    fontWeight: "10000",
     transition: theme.transitions.create(["margin", "width"], {
       easing: theme.transitions.easing.easeOut,
       duration: theme.transitions.duration.enteringScreen,
@@ -29,7 +36,8 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     flexGrow: 1,
-    fontSize: "1em",
+    fontSize: "x-large",
+    fontWeight: "bold",
   },
   hide: {
     display: "none",
@@ -43,14 +51,12 @@ const RoomAppbar = () => {
   const { peopleDrawerOpen, setPeopleDraweropen } = useContext(NameContext);
 
   const handleChatDrawerOpen = () => {
-    console.log("app bar chat button works");
     setChatDraweropen(true);
     setPeopleDraweropen(false);
     console.log(chatDrawerOpen);
   };
 
   const handlePeopleDrawerOpen = () => {
-    console.log("app bar people button works");
     setPeopleDraweropen(true);
     setChatDraweropen(false);
     console.log(peopleDrawerOpen);

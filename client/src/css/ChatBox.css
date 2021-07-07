@@ -9,7 +9,7 @@
 
 form {
   width: 88%;
-  height: 15vh;
+  height: 7vh;
   font-size: small;
   border-radius: 5px;
   padding: 20px;
@@ -44,7 +44,7 @@ button {
 .render-chat {
   display: flex;
   width: 88%;
-  height: 65vh;
+  height: 73vh;
   border-radius: 5px;
   padding: 20px;
   margin-right: 10px;

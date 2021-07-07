@@ -12,6 +12,7 @@ const useStyles = makeStyles(() => ({
     width: "40vh",
     marginLeft: "10vh",
     alignItems: "center",
+    background: "#ffffff",
   },
 }));
 
@@ -61,7 +62,7 @@ const CreateRoom = (props) => {
               label='Name'
             />
           </div>
-          <button style={{ backgroundColor: "#4169E1" }}>Create room</button>
+          <button style={{ backgroundColor: "#1b024a", color: "#ffffff", fontWeight: "bold", }}>Create room</button>
         </form>
       </div>
       <br></br>
@@ -76,7 +77,7 @@ const CreateRoom = (props) => {
               label='Name'
             />
           </div>
-          <button style={{ backgroundColor: "#4169E1" }}>
+          <button style={{ backgroundColor: "#1b024a", color: "#ffffff", fontWeight: "bold", }}>
             Create chat room
           </button>
         </form>
