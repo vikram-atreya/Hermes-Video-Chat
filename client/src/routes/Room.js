@@ -64,6 +64,7 @@ const useStyles = makeStyles((theme) => ({
   },
   GridElement: {
     height: "100%",
+    justifyContent: "space-evenly",
   },
   VideoName: {
     textAlign: "center",

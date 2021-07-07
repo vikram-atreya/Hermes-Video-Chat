@@ -20,7 +20,7 @@ const useStyles = makeStyles(() => ({
     height: "25vh",
     display: "wrap",
     flexDirection: "column",
-    width: "40vh",
+    width: "25vw",
     marginLeft: "10vh",
     alignItems: "center",
     background: "#ffffff",
@@ -54,7 +54,7 @@ const CreateRoom = (props) => {
   };
 
   return (
-    <div>
+    <div  style={{alignSelf: "center", alignSelf: "center", align: "center"}}>
       <AppBar className={classes.appBar} position='static' height='10vh'>
         Video Chat App
       </AppBar>
@@ -63,7 +63,7 @@ const CreateRoom = (props) => {
           <h1>Welcome to my Video Chat App.</h1>
         </div>
       </div>
-      <div>
+      <div  style={{marginLeft: "30vw"}}>
         <form onSubmit={create} className={classes.Container}>
           <h2>Enter your display name</h2>
           <div>
@@ -72,25 +72,12 @@ const CreateRoom = (props) => {
               value={state.name}
               onChange={(e) => onTextChange(e)}
               label='Name'
+              style={{width: "23vw"}}
             />
           </div>
-          <button style={{ backgroundColor: "#1b024a", color: "#ffffff", fontWeight: "bold", }}>Create room</button>
-        </form>
-      </div>
-      <br></br>
-      <div>
-        <form onSubmit={createChat} className={classes.Container}>
-          <h2>Enter your display name</h2>
-          <div>
-            <TextField
-              name='name'
-              value={state.name}
-              onChange={(e) => onTextChange(e)}
-              label='Name'
-            />
-          </div>
-          <button style={{ backgroundColor: "#1b024a", color: "#ffffff", fontWeight: "bold", }}>
-            Create chat room
+          <button style={{ backgroundColor: "#1b024a", color: "#ffffff", fontWeight: "bold", fontSize: "medium" }}>Create Video room</button>
+          <button onClick={createChat} style={{ backgroundColor: "#1b024a", color: "#ffffff", fontWeight: "bold",marginLeft: "1em", fontSize:"medium" }}>
+            Create Chat room
           </button>
         </form>
       </div>
