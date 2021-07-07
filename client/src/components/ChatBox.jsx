@@ -65,7 +65,7 @@ function ChatBox(props) {
     <div className='card'>
       <div className='render-chat'>
         <div>
-          <h1>Chat</h1>
+          <div className='title'>Chat</div>
           {renderChat()}
         </div>
       </div>
