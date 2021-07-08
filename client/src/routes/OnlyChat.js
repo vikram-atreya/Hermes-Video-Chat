@@ -47,8 +47,8 @@ const OnlyChat = (props) => {
   useEffect(() => {
     if (globalName === "") {
       setnameModalOpen(true);
-    } 
-  }, [globalName]);;
+    }
+  }, [globalName]);
 
   const handleModalClose = () => {
     setglobalName(tempName.name);
@@ -105,7 +105,7 @@ const OnlyChat = (props) => {
             marginTop: "5px",
           }}
           onClick={create}
-          id="spl_button"
+          id='spl_button'
         >
           Enter Video room
         </button>

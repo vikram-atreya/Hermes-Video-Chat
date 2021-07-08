@@ -78,9 +78,9 @@ const CreateRoom = (props) => {
               style={{ width: "23vw" }}
             />
           </div>
-          <div id="btn-container">
-            <button id="spl_button" onClick={create}>
-            Create Video Room<span></span>
+          <div id='btn-container'>
+            <button id='spl_button' onClick={create}>
+              Create Video Room<span></span>
               <span></span>
               <span></span>
               <span></span>
@@ -89,8 +89,8 @@ const CreateRoom = (props) => {
               <b aria-hidden='true'>Create Video Room</b>
               <b aria-hidden='true'>Create Video Room</b>
             </button>
-            <button id="spl_button" onClick={createChat}>
-            Create Chat Room<span></span>
+            <button id='spl_button' onClick={createChat}>
+              Create Chat Room<span></span>
               <span></span>
               <span></span>
               <span></span>
@@ -99,7 +99,7 @@ const CreateRoom = (props) => {
               <b aria-hidden='true'>Create Chat Room</b>
               <b aria-hidden='true'>Create Chat Room</b>
             </button>
-          </div>          
+          </div>
         </form>
       </div>
     </div>

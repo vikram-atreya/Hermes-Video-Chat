@@ -51,7 +51,6 @@
   padding-left: 5%;
 }
 
-
 #spl_button {
   --borderWidth: 3;
   --boxShadowDepth: 8;
@@ -61,13 +60,15 @@
   --verticalPadding: 8;
   background: transparent;
   border: calc(var(--borderWidth) * 1px) solid var(--buttonColor);
-  box-shadow: calc(var(--boxShadowDepth) * 1px) calc(var(--boxShadowDepth) * 1px) 0 #888;
+  box-shadow: calc(var(--boxShadowDepth) * 1px)
+    calc(var(--boxShadowDepth) * 1px) 0 #888;
   color: var(--buttonColor);
   cursor: pointer;
   font-size: calc(var(--fontSize) * 1rem);
   font-weight: bold;
   outline: transparent;
-  padding: calc(var(--verticalPadding) * 1px) calc(var(--horizontalPadding) * 1px);
+  padding: calc(var(--verticalPadding) * 1px)
+    calc(var(--horizontalPadding) * 1px);
   position: relative;
   transition: box-shadow 0.15s ease;
   margin-right: 0.5em;
@@ -77,7 +78,8 @@
   width: 44%;
 }
 #spl_button:hover {
-  box-shadow: calc(var(--boxShadowDepth) / 2 * 1px) calc(var(--boxShadowDepth) / 2 * 1px) 0 #888;
+  box-shadow: calc(var(--boxShadowDepth) / 2 * 1px)
+    calc(var(--boxShadowDepth) / 2 * 1px) 0 #888;
   border-radius: 10px;
 }
 #spl_button:active {
@@ -129,7 +131,8 @@
   clip-path: var(--clip);
   color: var(--bg, #fafafa);
   left: calc(var(--borderWidth) * -1px);
-  padding: calc(var(--verticalPadding) * 1px) calc(var(--horizontalPadding) * 1px);
+  padding: calc(var(--verticalPadding) * 1px)
+    calc(var(--horizontalPadding) * 1px);
   position: absolute;
   right: calc(var(--borderWidth) * -1px);
   top: calc(var(--borderWidth) * -1px);
