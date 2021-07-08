@@ -14,7 +14,7 @@ const useStyles = makeStyles(() => ({
     fontSize: "xx-large",
     fontWeight: "bold",
     paddingTop: "1vh",
-    paddingLeft: "2vh",
+    paddingLeft: "1vw",
   },
   Container: {
     height: "30vh",
@@ -25,6 +25,10 @@ const useStyles = makeStyles(() => ({
     alignItems: "center",
     background: "#ffffff",
     backgroundColor: "#e3e3e3",
+    paddingLeft: "2vw",
+    paddingRight: "2vw",
+    paddingTop: "2vh",
+    paddingDown: "2vh",
   },
 }));
 
@@ -54,8 +58,8 @@ const CreateRoom = (props) => {
   };
 
   return (
-    <div style={{ alignSelf: "center", alignSelf: "center", align: "center" }}>
-      <AppBar className={classes.appBar} position='static' height='10vh'>
+    <div>
+      <AppBar className={classes.appBar} position='static'>
         Video Chat App
       </AppBar>
       <div class='outer-typewriter'>
@@ -63,10 +67,10 @@ const CreateRoom = (props) => {
           <h1>Welcome to my Video Chat App.</h1>
         </div>
       </div>
-      <div style={{ marginLeft: "30vw" }}>
+      <div style={{ marginLeft: "30vw", width: "40vw", height: "30vh" }}>
         <form onSubmit={create} className={classes.Container}>
-          <h2>Enter your display name</h2>
-          <div>
+          <h2 style={{ height: "4vh" }}>Enter your display name</h2>
+          <div style={{ height: "8vh" }}>
             <TextField
               name='name'
               value={state.name}
@@ -75,26 +79,28 @@ const CreateRoom = (props) => {
               style={{ width: "23vw" }}
             />
           </div>
-          <button role='button' tabindex='0' onClick={create}>
-          Create Video Room<span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-            <b aria-hidden='true'>Create Video Room</b>
-            <b aria-hidden='true'>Create Video Room</b>
-            <b aria-hidden='true'>Create Video Room</b>
-            <b aria-hidden='true'>Create Video Room</b>
-          </button>
-          <button role='button' tabindex='0' onClick={createChat}>
-          Create Chat Room<span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-            <b aria-hidden='true'>Create Chat Room</b>
-            <b aria-hidden='true'>Create Chat Room</b>
-            <b aria-hidden='true'>Create Chat Room</b>
-            <b aria-hidden='true'>Create Chat Room</b>
-          </button>
+          <div id="btn-container">
+            <button id="spl_button" role='button' onClick={create}>
+            Create Video Room<span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+              <b aria-hidden='true'>Create Video Room</b>
+              <b aria-hidden='true'>Create Video Room</b>
+              <b aria-hidden='true'>Create Video Room</b>
+              <b aria-hidden='true'>Create Video Room</b>
+            </button>
+            <button id="spl_button" role='button' onClick={createChat}>
+            Create Chat Room<span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+              <b aria-hidden='true'>Create Chat Room</b>
+              <b aria-hidden='true'>Create Chat Room</b>
+              <b aria-hidden='true'>Create Chat Room</b>
+              <b aria-hidden='true'>Create Chat Room</b>
+            </button>
+          </div>          
         </form>
       </div>
     </div>

@@ -48,11 +48,11 @@ const useStyles = makeStyles((theme) => ({
     position: "fixed",
     bottom: 0,
     left: 0,
-    backgroundColor: "#f9dfdc",
+    backgroundColor: "#ffffff",
     alignItems: "center",
     alignSelf: "center",
     paddingTop: "1em",
-    paddingBottom: "1em",
+    paddingBottom: "3em",
     paddingLeft: "25vw",
   },
   VideoBox: {

@@ -15,6 +15,7 @@
   letter-spacing: 0.15em; /* Adjust as needed */
   animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
   font-family: monospace;
+  width: 70vw;
 }
 
 /* The typing effect */
@@ -43,7 +44,15 @@
 *:before {
   box-sizing: border-box;
 }
-button {
+
+#btn-container {
+  width: 28vw;
+  height: 7vh;
+  padding-left: 5%;
+}
+
+
+#spl_button {
   --borderWidth: 3;
   --boxShadowDepth: 8;
   --buttonColor: #1b024a;
@@ -64,17 +73,17 @@ button {
   margin-right: 0.5em;
   margin-left: 0.5em;
   border-radius: 10px;
-  height: 25%;
-  width: 46%;
+  height: 80%;
+  width: 44%;
 }
-button:hover {
+#spl_button:hover {
   box-shadow: calc(var(--boxShadowDepth) / 2 * 1px) calc(var(--boxShadowDepth) / 2 * 1px) 0 #888;
   border-radius: 10px;
 }
-button:active {
+#spl_button:active {
   box-shadow: 0 0 0 #888;
 }
-button span {
+#spl_button span {
   -webkit-clip-path: var(--clip);
   bottom: calc(var(--borderWidth) * -1px);
   clip-path: var(--clip);
@@ -85,33 +94,33 @@ button span {
   z-index: 1;
   border-radius: 10px;
 }
-button span:nth-of-type(1):hover,
-button span:nth-of-type(2):hover,
-button span:nth-of-type(3):hover,
-button span:nth-of-type(4):hover {
+#spl_button span:nth-of-type(1):hover,
+#spl_button span:nth-of-type(2):hover,
+#spl_button span:nth-of-type(3):hover,
+#spl_button span:nth-of-type(4):hover {
   --clip: polygon(0 0, 100% 0, 100% 100%, 0 100%);
   z-index: 2;
 }
-button span:nth-of-type(1):hover ~ b:nth-of-type(1),
-button span:nth-of-type(2):hover ~ b:nth-of-type(2),
-button span:nth-of-type(3):hover ~ b:nth-of-type(3),
-button span:nth-of-type(4):hover ~ b:nth-of-type(4) {
+#spl_button span:nth-of-type(1):hover ~ b:nth-of-type(1),
+#spl_button span:nth-of-type(2):hover ~ b:nth-of-type(2),
+#spl_button span:nth-of-type(3):hover ~ b:nth-of-type(3),
+#spl_button span:nth-of-type(4):hover ~ b:nth-of-type(4) {
   --clip: inset(0 0 0 0);
   border-radius: 10px;
 }
-button span:nth-of-type(1) {
+#spl_button span:nth-of-type(1) {
   --clip: polygon(0 0, 100% 0, 50% 50%, 50% 50%);
 }
-button span:nth-of-type(2) {
+#spl_button span:nth-of-type(2) {
   --clip: polygon(100% 0, 100% 100%, 50% 50%);
 }
-button span:nth-of-type(3) {
+#spl_button span:nth-of-type(3) {
   --clip: polygon(0 100%, 100% 100%, 50% 50%);
 }
-button span:nth-of-type(4) {
+#spl_button span:nth-of-type(4) {
   --clip: polygon(0 0, 0 100%, 50% 50%);
 }
-button b {
+#spl_button b {
   -webkit-clip-path: var(--clip);
   background: var(--buttonColor);
   border: calc(var(--borderWidth) * 1px) solid var(--buttonColor);
@@ -129,19 +138,19 @@ button b {
   transition: clip-path 0.25s ease, -webkit-clip-path 0.25s ease;
   border-radius: 10px;
 }
-button b:nth-of-type(1) {
+#spl_button b:nth-of-type(1) {
   --clip: inset(0 0 100% 0);
   border-radius: 10px;
 }
-button b:nth-of-type(2) {
+#spl_button b:nth-of-type(2) {
   --clip: inset(0 0 0 100%);
   border-radius: 10px;
 }
-button b:nth-of-type(3) {
+#spl_button b:nth-of-type(3) {
   --clip: inset(100% 0 0 0);
   border-radius: 10px;
 }
-button b:nth-of-type(4) {
+#spl_button b:nth-of-type(4) {
   --clip: inset(0 100% 0 0);
   border-radius: 10px;
 }

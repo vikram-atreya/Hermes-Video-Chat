@@ -7,6 +7,27 @@ import "../css/ChatBox.css";
 import io from "socket.io-client";
 import { NameContext } from "../Context";
 
+const Message = (props) => {
+  console.log("name1 is "+props.name1);
+  console.log("globalName1 is "+props.globalName1);
+  if(props.name1 !== props.globalName1){
+    return (
+      <div id="message">
+        <div id="name"> {props.name1} </div>
+        <span id="message-text">{props.message1}</span>
+      </div>
+    );
+  }
+  else{
+    return (
+      <div id="message-own">
+        <div id="name"> {props.name1} </div>
+        <span id="message-text">{props.message1}</span>
+      </div>
+    );
+  }
+};
+
 function ChatBox(props) {
   const [state, setState] = useState({ message: "", name: "User" });
   const [chat, setChat] = useState([]);
@@ -55,16 +76,14 @@ function ChatBox(props) {
   const renderChat = () =>
     chatRef.current.map(({ name, message }, index) => (
       <div key={index}>
-        <h3>
-          {name}: <span>{message}</span>
-        </h3>
+        <Message name1={name} message1={message} globalName1={globalName}/>
       </div>
     ));
 
   return (
     <div className='card'>
       <div className='render-chat'>
-        <div>
+        <div style={{width: "100%"}}>
           <div className='title'>Chat</div>
           {renderChat()}
         </div>
