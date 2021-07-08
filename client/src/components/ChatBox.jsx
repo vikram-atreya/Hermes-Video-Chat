@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState, useContext } from "react";
 
-import { TextField, Button } from "@material-ui/core";
+import { TextField } from "@material-ui/core";
 import SendIcon from "@material-ui/icons/Send";
 import "../css/ChatBox.css";
 
@@ -58,7 +58,7 @@ function ChatBox(props) {
       setChat([...chat, { name, message }]);
     });
     return () => socketRef.current.disconnect();
-  }, [chat]);
+  }, [chat, roomID]);
 
   const onTextChange = (e) => {
     setState({ ...state, [e.target.name]: e.target.value });
@@ -103,7 +103,6 @@ function ChatBox(props) {
               class='raise'
               style={{
                 width: "20%",
-                margin: "20px",
                 height: "30px",
                 padding: "0px",
                 margin: "0px",

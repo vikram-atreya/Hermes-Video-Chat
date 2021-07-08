@@ -212,7 +212,7 @@ const Room = (props) => {
           });
         });
     }
-  }, [globalName]);
+  }, [globalName, roomID]);
 
   function createPeer(userToSignal, callerID, stream) {
     const peer = new Peer({
@@ -384,8 +384,6 @@ const Room = (props) => {
     },
   }))(Button);
 
-  var h = window.innerHeight;
-
   return (
     <>
       <RoomAppbar />
@@ -520,7 +518,7 @@ const Room = (props) => {
               <Button
                 className={classes.button}
                 variant='contained'
-                color='#f44336[900]'
+                color='#f44336'
                 startIcon={<StopIcon fontSize='large' />}
                 onClick={() => Stoprecording()}
               >

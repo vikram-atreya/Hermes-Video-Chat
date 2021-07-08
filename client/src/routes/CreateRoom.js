@@ -10,7 +10,6 @@ const useStyles = makeStyles(() => ({
     height: "8vh",
     backgroundColor: "#e3e3e3",
     color: "#1b024a",
-    fontWeight: "10000",
     fontSize: "xx-large",
     fontWeight: "bold",
     paddingTop: "1vh",
@@ -80,7 +79,7 @@ const CreateRoom = (props) => {
             />
           </div>
           <div id="btn-container">
-            <button id="spl_button" role='button' onClick={create}>
+            <button id="spl_button" onClick={create}>
             Create Video Room<span></span>
               <span></span>
               <span></span>
@@ -90,7 +89,7 @@ const CreateRoom = (props) => {
               <b aria-hidden='true'>Create Video Room</b>
               <b aria-hidden='true'>Create Video Room</b>
             </button>
-            <button id="spl_button" role='button' onClick={createChat}>
+            <button id="spl_button" onClick={createChat}>
             Create Chat Room<span></span>
               <span></span>
               <span></span>
