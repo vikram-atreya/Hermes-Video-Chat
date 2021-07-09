@@ -63,6 +63,16 @@ const OnlyChat = (props) => {
     props.history.push(`/room/${roomID}`);
   }
 
+  const copyToClipboard = () => {
+    const el = document.createElement('textarea');
+    el.value = window.location.href;
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
+  }
+
+
   return (
     <BB>
       {nameModalopen && (
@@ -94,22 +104,37 @@ const OnlyChat = (props) => {
           </Dialog>
         </div>
       )}
-      <AppBar className={classes.appBar} position='static' height='10vh'>
-        <div style={{ width: "30vw" }}>Video Chat App</div>
-        <button
-          style={{
-            width: "12vw",
-            height: "5vh",
-            marginLeft: "55vw",
-            marginRight: "2vw",
-            marginTop: "5px",
-          }}
-          onClick={create}
-          id='spl_button'
-        >
-          Enter Video room
-        </button>
-      </AppBar>
+      
+        <AppBar className={classes.appBar} position='static' height='10vh'>
+        <a href="http://localhost:3000/" style={{textDecoration: "none",  width: "30vw"}}>
+          <div style={{ color: "#1b024a" }}>Hermes</div>
+        </a>          
+          <button
+            style={{
+              width: "8vw",
+              height: "5vh",
+              marginLeft: "50vw",
+              marginTop: "5px",
+            }}
+            onClick={copyToClipboard}
+            id='spl_button'
+          >
+            Copy link
+          </button>
+          <button
+            style={{
+              width: "12vw",
+              height: "5vh",
+              marginLeft: "2vw",
+              marginRight: "2vw",
+              marginTop: "5px",
+            }}
+            onClick={create}
+            id='spl_button'
+          >
+            Enter Video room
+          </button>
+        </AppBar>
       <Container>
         <ChatBox roomID={roomID} />
       </Container>

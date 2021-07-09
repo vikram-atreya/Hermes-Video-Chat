@@ -22,6 +22,7 @@ import VideocamOffIcon from "@material-ui/icons/VideocamOff";
 import CallEndIcon from "@material-ui/icons/ScreenShare";
 import StopIcon from "@material-ui/icons/Stop";
 import AlbumIcon from "@material-ui/icons/Album";
+import PhoneDisabledIcon from '@material-ui/icons/PhoneDisabled';
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -37,23 +38,26 @@ import styled from "styled-components";
 
 const useStyles = makeStyles((theme) => ({
   button: {
-    marginLeft: "10px",
-    marginRight: "10px",
+    height: "5vh",
+    padding: "0px",
+    marginLeft: "0.5vw",
+    marginRight: "0.5vw",
     alignSelf: "center",
     color: "#ffffff",
+    display: "wrap",
   },
   stickToBottom: {
     width: "100vw",
-    height: "5vh",
+    height: "9vh",
     position: "fixed",
     bottom: 0,
     left: 0,
     backgroundColor: "#ffffff",
     alignItems: "center",
     alignSelf: "center",
-    paddingTop: "1em",
-    paddingBottom: "3em",
-    paddingLeft: "25vw",
+    paddingTop: "2vh",
+    paddingBottom: "2vh",
+    paddingLeft: "2vw",
   },
   VideoBox: {
     float: "top",
@@ -344,7 +348,7 @@ const Room = (props) => {
 
   const Disconnect = () => {
     socketRef.current.emit("disconnect");
-    window.location.reload();
+    window.location.replace("http://localhost:3000");
   };
 
   const handleModalClose = () => {
@@ -459,28 +463,31 @@ const Room = (props) => {
               height: "3vh",
             }}
           />
-          <Typography className={classes.stickToBottom}>
+          <div className={classes.stickToBottom}>
+            <div style={{minWidth: "50vw", alignSelf: "center", alignItems: "center", margin: "auto"}}>
             {video === 0 ? (
               <RedButton
                 className={classes.button}
                 variant='contained'
-                startIcon={<VideocamOffIcon fontSize='large' />}
                 onClick={() => startVideo()}
-              />
+              >
+                <VideocamOffIcon />
+              </RedButton>
             ) : (
               <GreenButton
-                className={classes.button}
-                variant='contained'
-                startIcon={<VideocamIcon fontSize='large' />}
-                onClick={() => stopVideo()}
-              />
+                  className={classes.button}
+                  variant='contained'
+                  onClick={() => stopVideo()}
+                >
+                  <VideocamIcon fontSize="small"/>
+                </GreenButton>
             )}
             {audio === 0 ? (
               <RedButton
                 className={classes.button}
                 variant='contained'
                 color='danger'
-                startIcon={<MicOffIcon fontSize='large' />}
+                startIcon={<MicOffIcon fontSize='2vw' />}
                 onClick={() => startAudio()}
               />
             ) : (
@@ -488,7 +495,7 @@ const Room = (props) => {
                 className={classes.button}
                 variant='contained'
                 color='primary'
-                startIcon={<MicIcon fontSize='large' />}
+                startIcon={<MicIcon fontSize='2vw' />}
                 onClick={() => stopAudio()}
               />
             )}
@@ -497,8 +504,9 @@ const Room = (props) => {
                 className={classes.button}
                 variant='contained'
                 color='primary'
-                startIcon={<ScreenShareIcon fontSize='large' />}
+                startIcon={<ScreenShareIcon fontSize='2vw' />}
                 onClick={() => shareScreen()}
+                style={{paddingLeft: "10px", paddingRight: "10px"}}
               >
                 Share screen
               </Button>
@@ -507,8 +515,9 @@ const Room = (props) => {
                 className={classes.button}
                 variant='contained'
                 color='primary'
-                startIcon={<CancelPresentationIcon fontSize='large' />}
+                startIcon={<CancelPresentationIcon fontSize='2vw' />}
                 onClick={() => stopshareScreen()}
+                style={{paddingLeft: "10px", paddingRight: "10px"}}
               >
                 Stop Sharin
               </RedButton>
@@ -519,8 +528,9 @@ const Room = (props) => {
                 className={classes.button}
                 variant='contained'
                 color='#f44336'
-                startIcon={<StopIcon fontSize='large' />}
+                startIcon={<StopIcon fontSize='2vw' />}
                 onClick={() => Stoprecording()}
+                style={{paddingLeft: "10px", paddingRight: "10px"}}
               >
                 Stop recording
               </Button>
@@ -529,8 +539,9 @@ const Room = (props) => {
                 className={classes.button}
                 variant='contained'
                 color='primary'
-                startIcon={<AlbumIcon fontSize='large' />}
+                startIcon={<AlbumIcon fontSize='2vw' />}
                 onClick={() => Startrecording()}
+                style={{paddingLeft: "10px", paddingRight: "10px"}}
               >
                 Record
               </Button>
@@ -539,12 +550,12 @@ const Room = (props) => {
             <RedButton
               className={classes.button}
               variant='contained'
-              startIcon={<CallEndIcon fontSize='large' />}
               onClick={() => Disconnect()}
             >
-              Disconnect
+              <PhoneDisabledIcon fontSize='small' />
             </RedButton>
-          </Typography>
+            </div>
+          </div>
         </Container>
         <Drawer open={chatDrawerOpen} variant='persistent' anchor='right'>
           <div

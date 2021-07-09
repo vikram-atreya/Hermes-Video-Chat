@@ -59,11 +59,11 @@ const CreateRoom = (props) => {
   return (
     <div>
       <AppBar className={classes.appBar} position='static'>
-        Video Chat App
+        Hermes
       </AppBar>
       <div class='outer-typewriter'>
         <div class='typewriter'>
-          <h1>Welcome to my Video Chat App.</h1>
+          <h1>Welcome to Hermes.</h1>
         </div>
       </div>
       <div style={{ marginLeft: "30vw", width: "40vw", height: "30vh" }}>

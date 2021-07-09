@@ -18,6 +18,7 @@ const useStyles = makeStyles((theme) => ({
     color: "#1b024a",
     fontSize: "x-large",
     fontWeight: "10000",
+    marginRight: "23%",
     transition: theme.transitions.create(["margin", "width"], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
@@ -36,8 +37,9 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     flexGrow: 1,
-    fontSize: "x-large",
+    fontSize: "xx-large",
     fontWeight: "bold",
+    color: "#1b024a"
   },
   hide: {
     display: "none",
@@ -67,9 +69,14 @@ const RoomAppbar = () => {
         [classes.appBarShift]: chatDrawerOpen,
       })}
       position='static'
+      style={{color: "#1b024a"}}
     >
       <Toolbar>
-        <Typography className={classes.title}>Video Chat App</Typography>
+          <Typography className={classes.title}>
+            <a href="http://localhost:3000/" style={{textDecoration: "none", color: "#1b024a"}}>
+              Hermes
+            </a>
+          </Typography>         
         <IconButton
           color='inherit'
           aria-label='open drawer'

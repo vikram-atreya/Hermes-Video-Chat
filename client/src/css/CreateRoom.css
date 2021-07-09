@@ -15,7 +15,7 @@
   letter-spacing: 0.15em; /* Adjust as needed */
   animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
   font-family: monospace;
-  width: 70vw;
+  width: 43vw;
 }
 
 /* The typing effect */
@@ -64,7 +64,7 @@
     calc(var(--boxShadowDepth) * 1px) 0 #888;
   color: var(--buttonColor);
   cursor: pointer;
-  font-size: calc(var(--fontSize) * 1rem);
+  font-size: calc(var(--fontSize) * 1vw);
   font-weight: bold;
   outline: transparent;
   padding: calc(var(--verticalPadding) * 1px)
