@@ -62,7 +62,7 @@ function ParticlesBg() {
           },
           move: {
             enable: true,
-            speed: 3,
+            speed: 1,
             direction: "top-right",
             random: false,
             straight: false,

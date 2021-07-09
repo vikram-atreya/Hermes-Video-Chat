@@ -39,7 +39,7 @@ function ChatBox(props) {
   const chatRef = useRef([]);
 
   useEffect(() => {
-    socketRef.current = io.connect("http://localhost:8000");
+    socketRef.current = io.connect("/");
     if (newChat) {
       socketRef.current.emit("newChat", roomID);
       socketRef.current.on("check", (prevData) => {
