@@ -138,6 +138,7 @@ const Room = (props) => {
   const socketRef = useRef();
   const userVideo = useRef();
   const peersRef = useRef([]);
+  const ScreenshareStream = useRef();
 
   const roomID = props.match.params.roomID;
   const { globalName, setglobalName } = useContext(NameContext);
@@ -279,7 +280,6 @@ const Room = (props) => {
     navigator.mediaDevices
       .getDisplayMedia({ video: videoConstraints, audio: true })
       .then(function (currentStream) {
-        setmyVideo(currentStream);
         userVideo.current.srcObject = currentStream;
         peers.forEach(function (pc) {
           pc.peer.replaceTrack(
@@ -300,7 +300,6 @@ const Room = (props) => {
     navigator.mediaDevices
       .getUserMedia({ video: videoConstraints, audio: true })
       .then(function (currentStream) {
-        setmyVideo(currentStream);
         userVideo.current.srcObject = currentStream;
         peers.forEach(function (pc) {
           pc.peer.replaceTrack(
@@ -316,16 +315,15 @@ const Room = (props) => {
   };
 
   const parts = [];
-  let mediaRecorder;
+  var mediaRecorder;
 
   const Startrecording = () => {
     setRecord(1);
     navigator.mediaDevices
-      .getDisplayMedia({ video: videoConstraints, audio: true })
+      .getUserMedia({ video: true, audio: true })
       .then((stream) => {
         mediaRecorder = new MediaRecorder(stream);
         mediaRecorder.start(1000);
-
         mediaRecorder.ondataavailable = function (e) {
           parts.push(e.data);
         };
