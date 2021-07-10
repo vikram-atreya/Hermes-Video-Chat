@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import clsx from "clsx";
 
 import { makeStyles } from "@material-ui/core/styles";
@@ -47,6 +47,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const RoomAppbar = () => {
+
+  const [copied, setCopied] = useState(0);
+
   const classes = useStyles();
   const { chatDrawerOpen, setChatDraweropen } = useContext(NameContext);
   const { peopleDrawerOpen, setPeopleDraweropen } = useContext(NameContext);
@@ -63,6 +66,19 @@ const RoomAppbar = () => {
     console.log(peopleDrawerOpen);
   };
 
+  const copyToClipboard = () => {
+    const el = document.createElement('textarea');
+    el.value = window.location.href;
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
+    setCopied(1);
+    setInterval(() => {
+      setCopied(0);
+    }, 2500)
+  }
+
   return (
     <AppBar
       className={clsx(classes.appBar, {
@@ -76,7 +92,39 @@ const RoomAppbar = () => {
             <a href="http://localhost:3000/" style={{textDecoration: "none", color: "#1b024a"}}>
               Hermes
             </a>
-          </Typography>         
+          </Typography>
+          {copied === 1 ? (
+              <button
+              style={{
+                width: "8vw",
+                height: "5vh",
+                marginLeft: "50vw",
+                marginTop: "-1px",
+                boxShadow: "none"
+              }}
+              onClick={copyToClipboard}
+              id='spl_button'
+            >
+               Copied!
+            </button> 
+            ) : (
+              <button
+                style={{
+                  width: "8vw",
+                  height: "5vh",
+                  marginLeft: "50vw",
+                  marginTop: "-1px",
+                  boxShadow: "none"
+                }}
+                onClick={copyToClipboard}
+                id='spl_button'
+              >
+                 Copy link
+              </button> 
+            )}
+        
+  
+  
         <IconButton
           color='inherit'
           aria-label='open drawer'

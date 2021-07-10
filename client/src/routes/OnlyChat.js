@@ -12,7 +12,7 @@ const useStyles = makeStyles(() => ({
   appBar: {
     width: "100vw",
     height: "8vh",
-    backgroundColor: "#e3e3e3",
+    backgroundColor: "#ffffff",
     color: "#1b024a",
     fontSize: "xx-large",
     fontWeight: "bold",
