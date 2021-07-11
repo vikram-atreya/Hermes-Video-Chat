@@ -5,13 +5,7 @@ import ParticipantList from "../components/ParticipantList";
 import RoomAppbar from "../components/RoomAppBar";
 import { NameContext } from "../Context";
 
-import {
-  Button,
-  makeStyles,
-  Typography,
-  TextField,
-  Drawer,
-} from "@material-ui/core";
+import { Button, makeStyles, TextField, Drawer } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import ScreenShareIcon from "@material-ui/icons/ScreenShare";
 import CancelPresentationIcon from "@material-ui/icons/CancelPresentation";
@@ -19,10 +13,9 @@ import MicOffIcon from "@material-ui/icons/MicOff";
 import MicIcon from "@material-ui/icons/Mic";
 import VideocamIcon from "@material-ui/icons/Videocam";
 import VideocamOffIcon from "@material-ui/icons/VideocamOff";
-import CallEndIcon from "@material-ui/icons/ScreenShare";
 import StopIcon from "@material-ui/icons/Stop";
 import AlbumIcon from "@material-ui/icons/Album";
-import PhoneDisabledIcon from '@material-ui/icons/PhoneDisabled';
+import PhoneDisabledIcon from "@material-ui/icons/PhoneDisabled";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -36,6 +29,7 @@ import Peer from "simple-peer";
 
 import styled from "styled-components";
 
+//styles for button, down appbar, videos
 const useStyles = makeStyles((theme) => ({
   button: {
     height: "5vh",
@@ -126,19 +120,18 @@ const videoConstraints = {
 };
 
 const Room = (props) => {
-  const [peers, setPeers] = useState([]);
-  const [video, setVideo] = useState(1);
-  const [audio, setAudio] = useState(1);
-  const [record, setRecord] = useState(0);
-  const [myVideo, setmyVideo] = useState();
-  const [tempName, settempName] = useState({ name: "" });
-  const [nameModalopen, setnameModalOpen] = useState(false);
+  const [peers, setPeers] = useState([]); //contains user ID, peer connection & name
+  const [video, setVideo] = useState(1); //state for video on, off, screenshare
+  const [audio, setAudio] = useState(1); //state for audio on or off
+  const [record, setRecord] = useState(0); //state for recording or not
+  const [myVideo, setmyVideo] = useState(); //Mediastream being broadcasted
+  const [tempName, settempName] = useState({ name: "" }); //tempName
+  const [nameModalopen, setnameModalOpen] = useState(false); //state for name not enetered
 
   const videoState = useRef(1);
-  const socketRef = useRef();
-  const userVideo = useRef();
-  const peersRef = useRef([]);
-  const ScreenshareStream = useRef();
+  const socketRef = useRef(); //socket of server
+  const userVideo = useRef(); //Client video being displayed to him/herself
+  const peersRef = useRef([]); //A ref of all users
 
   const roomID = props.match.params.roomID;
   const { globalName, setglobalName } = useContext(NameContext);
@@ -149,17 +142,20 @@ const Room = (props) => {
   const cls = (...classes) => classes.filter(Boolean).join(" ");
 
   useEffect(() => {
+    //if name not present open modal or continue
     if (globalName === "") {
       setnameModalOpen(true);
     } else {
+      //connect with server
       socketRef.current = io.connect("/");
+      //get uservideo and broadcast to all users in room
       navigator.mediaDevices
         .getUserMedia({ video: videoConstraints, audio: true })
         .then((stream) => {
           setmyVideo(stream);
           userVideo.current.srcObject = stream;
           socketRef.current.emit("join room", { roomID, globalName });
-
+          //receive list of users in room from server and make new PCs
           socketRef.current.on("all users", (usersInThisRoom) => {
             const peers = [];
             usersInThisRoom.forEach((user, index) => {
@@ -178,10 +174,12 @@ const Room = (props) => {
             setPeers(peers);
           });
 
+          //handle new user join
           socketRef.current.on("user joined", (payload) => {
             var peer = addPeer(payload.signal, payload.callerID, stream);
             var peername = payload.name;
             if (videoState.current === 2) {
+              //if user is screenshare then send screenshare not camera
               peer.replaceTrack(
                 stream.getVideoTracks()[0],
                 userVideo.current.srcObject.getVideoTracks()[0],
@@ -220,6 +218,7 @@ const Room = (props) => {
   }, [globalName, roomID]);
 
   function createPeer(userToSignal, callerID, stream) {
+    //Make new PC as initiator
     const peer = new Peer({
       initiator: true,
       trickle: false,
@@ -239,6 +238,7 @@ const Room = (props) => {
   }
 
   function addPeer(incomingSignal, callerID, stream) {
+    //make new PC as non-initiator
     const peer = new Peer({
       initiator: false,
       trickle: false,
@@ -275,6 +275,7 @@ const Room = (props) => {
   };
 
   const shareScreen = () => {
+    //set State to screenshare
     videoState.current = 2;
     setVideo(2);
     navigator.mediaDevices
@@ -282,6 +283,7 @@ const Room = (props) => {
       .then(function (currentStream) {
         userVideo.current.srcObject = currentStream;
         peers.forEach(function (pc) {
+          //replace track in every PC with screenshare
           pc.peer.replaceTrack(
             myVideo.getVideoTracks()[0],
             currentStream.getVideoTracks()[0],
@@ -462,96 +464,103 @@ const Room = (props) => {
             }}
           />
           <div className={classes.stickToBottom}>
-            <div style={{minWidth: "50vw", alignSelf: "center", alignItems: "center", margin: "auto"}}>
-            {video === 0 ? (
-              <RedButton
-                className={classes.button}
-                variant='contained'
-                onClick={() => startVideo()}
-              >
-                <VideocamOffIcon />
-              </RedButton>
-            ) : (
-              <GreenButton
+            <div
+              style={{
+                minWidth: "50vw",
+                alignSelf: "center",
+                alignItems: "center",
+                margin: "auto",
+              }}
+            >
+              {video === 0 ? (
+                <RedButton
+                  className={classes.button}
+                  variant='contained'
+                  onClick={() => startVideo()}
+                >
+                  <VideocamOffIcon />
+                </RedButton>
+              ) : (
+                <GreenButton
                   className={classes.button}
                   variant='contained'
                   onClick={() => stopVideo()}
                 >
-                  <VideocamIcon fontSize="small"/>
+                  <VideocamIcon fontSize='small' />
                 </GreenButton>
-            )}
-            {audio === 0 ? (
+              )}
+              {audio === 0 ? (
+                <RedButton
+                  className={classes.button}
+                  variant='contained'
+                  color='danger'
+                  startIcon={<MicOffIcon fontSize='2vw' />}
+                  onClick={() => startAudio()}
+                />
+              ) : (
+                <GreenButton
+                  className={classes.button}
+                  variant='contained'
+                  color='primary'
+                  startIcon={<MicIcon fontSize='2vw' />}
+                  onClick={() => stopAudio()}
+                />
+              )}
+              {video === 1 || video === 0 ? (
+                <Button
+                  className={classes.button}
+                  variant='contained'
+                  color='primary'
+                  startIcon={<ScreenShareIcon fontSize='2vw' />}
+                  onClick={() => shareScreen()}
+                  style={{ paddingLeft: "10px", paddingRight: "10px" }}
+                >
+                  Share screen
+                </Button>
+              ) : (
+                <RedButton
+                  className={classes.button}
+                  variant='contained'
+                  color='primary'
+                  startIcon={<CancelPresentationIcon fontSize='2vw' />}
+                  onClick={() => stopshareScreen()}
+                  style={{ paddingLeft: "10px", paddingRight: "10px" }}
+                >
+                  Stop Sharin
+                </RedButton>
+              )}
+
+              {record === 1 ? (
+                <Button
+                  className={classes.button}
+                  variant='contained'
+                  color='#f44336'
+                  startIcon={<StopIcon fontSize='2vw' />}
+                  onClick={() => Stoprecording()}
+                  style={{ paddingLeft: "10px", paddingRight: "10px" }}
+                >
+                  Stop recording
+                </Button>
+              ) : (
+                <Button
+                  className={classes.button}
+                  variant='contained'
+                  color='primary'
+                  startIcon={<AlbumIcon fontSize='2vw' />}
+                  onClick={() => Startrecording()}
+                  style={{ paddingLeft: "10px", paddingRight: "10px" }}
+                >
+                  Record
+                </Button>
+              )}
+
               <RedButton
                 className={classes.button}
                 variant='contained'
-                color='danger'
-                startIcon={<MicOffIcon fontSize='2vw' />}
-                onClick={() => startAudio()}
-              />
-            ) : (
-              <GreenButton
-                className={classes.button}
-                variant='contained'
-                color='primary'
-                startIcon={<MicIcon fontSize='2vw' />}
-                onClick={() => stopAudio()}
-              />
-            )}
-            {video === 1 || video === 0 ? (
-              <Button
-                className={classes.button}
-                variant='contained'
-                color='primary'
-                startIcon={<ScreenShareIcon fontSize='2vw' />}
-                onClick={() => shareScreen()}
-                style={{paddingLeft: "10px", paddingRight: "10px"}}
+                onClick={() => Disconnect()}
               >
-                Share screen
-              </Button>
-            ) : (
-              <RedButton
-                className={classes.button}
-                variant='contained'
-                color='primary'
-                startIcon={<CancelPresentationIcon fontSize='2vw' />}
-                onClick={() => stopshareScreen()}
-                style={{paddingLeft: "10px", paddingRight: "10px"}}
-              >
-                Stop Sharin
+                <PhoneDisabledIcon fontSize='small' />
               </RedButton>
-            )}
-
-            {record === 1 ? (
-              <Button
-                className={classes.button}
-                variant='contained'
-                color='#f44336'
-                startIcon={<StopIcon fontSize='2vw' />}
-                onClick={() => Stoprecording()}
-                style={{paddingLeft: "10px", paddingRight: "10px"}}
-              >
-                Stop recording
-              </Button>
-            ) : (
-              <Button
-                className={classes.button}
-                variant='contained'
-                color='primary'
-                startIcon={<AlbumIcon fontSize='2vw' />}
-                onClick={() => Startrecording()}
-                style={{paddingLeft: "10px", paddingRight: "10px"}}
-              >
-                Record
-              </Button>
-            )}
-
-            <RedButton
-              className={classes.button}
-              variant='contained'
-              onClick={() => Disconnect()}
-            >
-              <PhoneDisabledIcon fontSize='small' />
-            </RedButton>
             </div>
           </div>
         </Container>

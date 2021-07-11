@@ -2,6 +2,7 @@ import React from "react";
 import Particles from "react-particles-js";
 import "../css/Particles.css";
 
+//returns the background to be used on all pages
 function ParticlesBg() {
   return (
     <Particles

@@ -8,8 +8,7 @@ import io from "socket.io-client";
 import { NameContext } from "../Context";
 
 const Message = (props) => {
-  console.log("name1 is " + props.name1);
-  console.log("globalName1 is " + props.globalName1);
+  //function to render message from self or other
   if (props.name1 !== props.globalName1) {
     return (
       <div id='message'>
@@ -41,6 +40,7 @@ function ChatBox(props) {
   useEffect(() => {
     socketRef.current = io.connect("/");
     if (newChat) {
+      //send signal to get old chats
       socketRef.current.emit("newChat", roomID);
       socketRef.current.on("check", (prevData) => {
         prevData.forEach((element) => {
@@ -52,6 +52,8 @@ function ChatBox(props) {
       });
       setnewChat(0);
     }
+
+    //send broadcast req to message all clients
     socketRef.current.on("message", ({ name, message }) => {
       chatRef.current.push({ name, message });
       setChat([...chat, { name, message }]);
@@ -72,6 +74,7 @@ function ChatBox(props) {
     setState({ message: "", name });
   };
 
+  //function to render all chats onto page
   const renderChat = () =>
     chatRef.current.map(({ name, message }, index) => (
       <div key={index}>

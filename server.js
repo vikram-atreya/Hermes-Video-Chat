@@ -13,8 +13,12 @@ const socketToRoom = {};
 const chatData = {};
 
 io.on("connection", (socket) => {
+  //connect to socket
+
+  //Join room handler
   socket.on("join room", ({ roomID, globalName }) => {
     let UserID = socket.id;
+    //initialize or push new user into room
     if (users[roomID]) {
       const length = users[roomID].length;
       if (length === 4) {
@@ -31,11 +35,12 @@ io.on("connection", (socket) => {
         return user;
       }
     });
-
+    //emit all users in room to new joinee
     socket.emit("all users", usersInThisRoom);
   });
 
   socket.on("sending signal", (payload) => {
+    //make new peer connections when user joins
     io.to(payload.userToSignal).emit("user joined", {
       signal: payload.signal,
       callerID: payload.callerID,
@@ -44,6 +49,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("returning signal", (payload) => {
+    //returning signal for new PC
     io.to(payload.callerID).emit("receiving returned signal", {
       signal: payload.signal,
       id: socket.id,
@@ -51,6 +57,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("disconnect", () => {
+    //remove user from room array and broadcast user left
     const roomID = socketToRoom[socket.id];
     let room = users[roomID];
     if (room) {
@@ -65,12 +72,14 @@ io.on("connection", (socket) => {
   });
 
   socket.on("newChat", (roomID) => {
+    //emit all prev chat data to new chat joinee
     if (chatData[roomID]) {
       socket.emit("check", chatData[roomID]);
     }
   });
 
   socket.on("message", ({ name, message, roomID }) => {
+    //emit message received to all including sender
     if (chatData[roomID]) {
       chatData[roomID].push({ name, message });
     } else {
@@ -81,9 +90,9 @@ io.on("connection", (socket) => {
 });
 
 if (process.env.PROD) {
-  app.use(express.static(path.join(__dirname, 'client/build')));
-  app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'client/build/index.html'));
+  app.use(express.static(path.join(__dirname, "client/build")));
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "client/build/index.html"));
   });
 }
 

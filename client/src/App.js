@@ -16,7 +16,6 @@ function App() {
             <Route path='/' exact component={CreateRoom} />
             <Route path='/ChatBox/:roomID' component={OnlyChat} />
             <Route path='/room/:roomID' component={Room} />
-            <Route path='/particles' component={ParticlesBg} />
           </Switch>
         </BrowserRouter>
       </div>
