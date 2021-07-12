@@ -1,13 +1,14 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import "../css/ParticipantList.css";
 
 const useStyles = makeStyles(() => ({
   item: {
-    width: "25vw",
-  },
-  styl: {
-    fontStyle: "italic",
-    fontWidth: "5px",
+    width: "20vw",
+    marginLeft: "2vw",
+    fontWeight: "bolder",
+    color: "#1b024a",
+    wordWrap: "break-word",
   },
 }));
 
@@ -16,19 +17,18 @@ const ParticipantList = (props) => {
 
   return (
     <div className={classes.item}>
-      <div>No of participants({props.usernames.length + 1})</div>
+      <h2 id="users-head">Users in Call ({props.usernames.length + 1})</h2>
       <br></br>
-      Participant list:
-      <div className={classes.styl}>
-        <div>1) You </div>
+      <ul id="un-list">
+        <li id="list-el"><a href="#">1) You </a></li>
         {props.usernames.map((user, index) => {
           return (
-            <div>
-              {index + 2}) {user.peername}
-            </div>
+            <li id="list-el">
+              <a href="#">{index + 2}) {user.peername}</a>
+            </li>
           );
         })}
-      </div>
+      </ul>
     </div>
   );
 };

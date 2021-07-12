@@ -132,6 +132,8 @@ const Room = (props) => {
   const socketRef = useRef(); //socket of server
   const userVideo = useRef(); //Client video being displayed to him/herself
   const peersRef = useRef([]); //A ref of all users
+  const mediaRecorder = useRef();
+  const parts = useRef([]);
 
   const roomID = props.match.params.roomID;
   const { globalName, setglobalName } = useContext(NameContext);
@@ -196,7 +198,7 @@ const Room = (props) => {
               peer,
               peername,
             };
-            setPeers((users) => [...users, peerObj]);
+            pushPeerToState(peerObj);
           });
 
           socketRef.current.on("receiving returned signal", (payload) => {
@@ -216,6 +218,10 @@ const Room = (props) => {
         });
     }
   }, [globalName, roomID]);
+
+  function pushPeerToState(peerObj) {
+    setPeers((users) => [...users, peerObj]);
+  }
 
   function createPeer(userToSignal, callerID, stream) {
     //Make new PC as initiator
@@ -256,11 +262,13 @@ const Room = (props) => {
 
   const stopVideo = () => {
     myVideo.getVideoTracks()[0].enabled = false;
+    setmyVideo(myVideo);
     setVideo(0);
   };
 
   const startVideo = () => {
     myVideo.getVideoTracks()[0].enabled = true;
+    setmyVideo(myVideo);
     setVideo(1);
   };
 
@@ -316,28 +324,26 @@ const Room = (props) => {
       });
   };
 
-  const parts = [];
-  var mediaRecorder;
-
-  const Startrecording = () => {
+  function Startrecording() {
     setRecord(1);
     navigator.mediaDevices
-      .getUserMedia({ video: true, audio: true })
+      .getDisplayMedia({ video: true, audio: true })
       .then((stream) => {
-        mediaRecorder = new MediaRecorder(stream);
-        mediaRecorder.start(1000);
-        mediaRecorder.ondataavailable = function (e) {
-          parts.push(e.data);
+        mediaRecorder.current = new MediaRecorder(stream);
+        mediaRecorder.current.start(1000);
+        mediaRecorder.current.ondataavailable = function (e) {
+          parts.current.push(e.data);
         };
       });
   };
 
-  const Stoprecording = () => {
+  function Stoprecording() {
     setRecord(0);
-    mediaRecorder.stop();
-    const blob = new Blob(parts, {
+    mediaRecorder.current.stop();
+    const blob = new Blob(parts.current, {
       type: "video/webm",
     });
+    parts.current = [];
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.style = "display: none";
@@ -435,8 +441,8 @@ const Room = (props) => {
             className={cls(
               classes.VideoBox,
               peers.length === 0 && classes.oneVideo,
-              peers.length === 1 && classes.twoVideo,
-              peers.length >= 2 && classes.threeVideo
+              peersRef.current.length === 1 && classes.twoVideo,
+              peersRef.current.length >= 2 && classes.threeVideo
             )}
           >
             <StyledVideo controls muted ref={userVideo} autoPlay playsInline />
@@ -526,12 +532,12 @@ const Room = (props) => {
                   onClick={() => stopshareScreen()}
                   style={{ paddingLeft: "10px", paddingRight: "10px" }}
                 >
-                  Stop Sharin
+                  Stop Sharing
                 </RedButton>
               )}
 
               {record === 1 ? (
-                <Button
+                <RedButton
                   className={classes.button}
                   variant='contained'
                   color='#f44336'
@@ -540,7 +546,7 @@ const Room = (props) => {
                   style={{ paddingLeft: "10px", paddingRight: "10px" }}
                 >
                   Stop recording
-                </Button>
+                </RedButton>
               ) : (
                 <Button
                   className={classes.button}
