@@ -12,8 +12,7 @@ const users = {};
 const socketToRoom = {};
 const chatData = {};
 
-io.on("connection", (socket) => {
-  //connect to socket
+io.on("connection", (socket) => {   //connect to socket
 
   //Join room handler
   socket.on("join room", ({ roomID, globalName }) => {
